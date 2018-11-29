@@ -7,6 +7,7 @@ speed = "50"
 direction = "3"
 
 recvSign = Thread(target = cn.getData)
+#Always look for a speed sign being sent from the raspberry pi
 
 m = cn.getConnection()
 

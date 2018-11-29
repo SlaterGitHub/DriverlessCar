@@ -92,15 +92,20 @@ def setCascFilter(frame):
 def getText(grey, Casc):
     for (x, y, w, h) in Casc:
         grey = np.array(grey[y:y+h, x:x+w], dtype = "uint8")
+        #take only the pixels in the area of x, y, w, h
         filename = "{}.png".format(os.getpid())
+        #create a file with a avalile number
         cv2.imwrite(filename, grey)
+        #write the array of pixels to the file
         textDetection = image_to_string(Image.open(filename))
+        #run the file through the text detection tesseract
 
         if textDetection != None or '':
             os.remove(filename)
             return textDetection
         else:
             os.remove(filename)
+        #remove file
 
 def setTextFilter(grey):
     grey = cv2.medianBlur(grey, 3)
