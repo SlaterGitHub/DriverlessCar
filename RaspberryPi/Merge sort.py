@@ -1,84 +1,55 @@
 import random as rdm
 import time
+#import libraries
 
-#fil = open("SortTimes.txt", "w")
-
-#print(numbers)
-               
-def getDigits(array, indx):
-    Digits = [None]*indx
+def getDigits(Digits, indx):
     for l in range(indx):
-        if (len(array) - 1) < l:
+        if (len(Digits) - 1) < l:
             break
-        Digits[l] = array[l]
+        #if the length of the array is less than 1 then end process
+
         if l > 0:
             if Digits[l] < Digits[l-1]:
                 Digits.insert(l-1, Digits.pop(l))
+        """when the loop has passed more than once if the value in index of
+        digits is less than the value in the cell before, swap the values"""
     return Digits
 
 def mergeSort(array, indx, finalArray):
     loop = len(array)/indx
-    #print(loop)
+    #Find how many times the array can be run before running out of cells
     excess = len(array) - loop*indx
-    for loop in range((len(array))/indx):
-        tempArray = []
+    #Find how many cells will be left in an excess
+    for loop in range(loop):
         tempArray = getDigits(array[(indx*loop):((indx*loop)+(indx))], indx)
         for j in range(len(tempArray)):
             finalArray.append(tempArray[j])
-            
+
     if excess != 0:
         mergeSort(array[((len(array))-excess):(len(array))], excess, finalArray)
+    #run the excess values through mergeSort as their own array
 
-    
-    return finalArray 
+    return finalArray
 
 def listSorted(array):
-    for m in range(len(array)):
-        if m > 0:
-            if array[m] < array[m-1]:
-                return False
+    for m in range(len(array)-1):
+        if array[m+1] < array[m]:
+            return False
     return True
+    #Check the array to make sure each va
 
-#print(numbers)
-start = time.time()
-
-size = 50000
+size = 50
 Range = 1000
 numbers = [None]*size
-times = []
 y = 2
 runs = 0
 
-for i in range(size):
-    numbers[i] = rdm.randint(0, Range)
+for x in range(size):
+    numbers[x] = rdm.randint(1, Range)
 
-secNumbers = numbers
-"""    
-start = time.time()
 while listSorted(numbers) == False:
     numbers = mergeSort(numbers, y, [])
     y += y
     runs += 1
-end = time.time()"""
 
-secStart = time.time()
-secNumbers = sorted(secNumbers, key=int)
-secEnd = time.time()
-        
-    
-
-#print(numbers)
-print(secNumbers)
-#print(runs)
-#print(end-start)
-print(secEnd - secStart)
-
-    
-    
-        
-
-
-
-    
-        
-
+print(numbers)
