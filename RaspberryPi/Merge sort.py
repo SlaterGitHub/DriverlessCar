@@ -36,7 +36,7 @@ def listSorted(array):
         if array[m+1] < array[m]:
             return False
     return True
-    #Check the array to make sure each va
+    #Check the array to make sure each value is in order from smallest to biggest
 
 size = 50
 Range = 1000
