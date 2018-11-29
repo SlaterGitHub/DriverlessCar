@@ -18,7 +18,7 @@ def getDigits(Digits, indx):
 def mergeSort(array, indx, finalArray):
     loop = len(array)/indx
     #Find how many times the array can be run before running out of cells
-    excess = len(array) - loop*indx
+    excess = len(array) % indx
     #Find how many cells will be left in an excess
     for loop in range(loop):
         #runs loop times for every loop
