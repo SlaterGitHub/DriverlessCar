@@ -21,6 +21,7 @@ def mergeSort(array, indx, finalArray):
     excess = len(array) - loop*indx
     #Find how many cells will be left in an excess
     for loop in range(loop):
+        #runs loop times for every loop
         tempArray = getDigits(array[(indx*loop):((indx*loop)+(indx))], indx)
         for j in range(len(tempArray)):
             finalArray.append(tempArray[j])
