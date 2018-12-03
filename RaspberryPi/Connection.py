@@ -1,5 +1,6 @@
 import socket
 import numpy
+import lz4.frame
 socketNum = 5001
 socketNum2 = 6001
 ip = "localhost"
@@ -37,8 +38,15 @@ def recvData():
         return speed
 
 def sendData(frame, c):
+    reso = 
     frame = frame.flatten()
     #Convert frame from a 2D array to a 1D array
     datas = frame.tostring()
-    c.sendall(datas)
+    datas = lz4.frame.compress(datas)
+    size = str(len(datas))
+    for x in range(6-len(size)):
+        size = "," + size
+    for x in range(3-len(reso)):
+        reso = "," + reso
+    c.sendall(size+reso+datas)
     #Convert to a string form and send the entire frame

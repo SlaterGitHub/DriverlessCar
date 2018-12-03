@@ -1,6 +1,6 @@
 import socket
 import numpy as np
-import math
+import lz4
 socketNum = 5001
 socketNum2 = 6001
 ip = "192.168.0.29"
@@ -12,7 +12,7 @@ w = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def getConnection():
-    w.connect((ip, socketNum)
+    w.connect((ip, socketNum))
     #Recieve connection with server
     print("Laptop <-- Pipeline: Connected")
 
@@ -43,18 +43,20 @@ def recvall(dataSize):
     return data
 
 def getData():
-    data = str(w.recv(14))
-    #Only listen for data that is 14 bytes long
-    dataSize, x, y = int(data.split(","))
-    #split data into three catagories
-
+    size = w.recv(6)
+    resolution = w.recv(3)
+    
     if data != None or '':
-        data = recvall(dataSize)
+        list = (size.decode()).split(',')
+        size = int(list[len(list)-1])
+        list = (resolution.decode()).split(',')
+        resolution = int(list[len(list)-1])
+        data = recvall(size)
         #If data is found then run the recvieve all function
         if not data:
             return None
-        frame = np.fromstring(data, dtype=np.uint8)
-        return frame.reshape((y, x, 3))
+        frame = np.fromstring(lz4.decompress(data), dtype=np.uint8)
+        return frame.reshape((reso, reso, 3))
         #Convert bytes to pixels and convert then from a 1D array to a 2D array
 
 def sendData(direction, text, m):
