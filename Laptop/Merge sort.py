@@ -1,6 +1,6 @@
 import random as rdm
 import time
-#import libraries
+#import libraris
 
 def getDigits(Digits, indx):
     for l in range(indx):
