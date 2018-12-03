@@ -1,6 +1,6 @@
 import socket
 import numpy as np
-import lz4
+import lz4.frame
 socketNum = 5001
 socketNum2 = 6001
 ip = "192.168.0.29"
@@ -45,7 +45,7 @@ def recvall(dataSize):
 def getData():
     size = w.recv(6)
     resolution = w.recv(3)
-    
+
     if data != None or '':
         list = (size.decode()).split(',')
         size = int(list[len(list)-1])

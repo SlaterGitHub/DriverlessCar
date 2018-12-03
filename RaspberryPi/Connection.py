@@ -38,7 +38,7 @@ def recvData():
         return speed
 
 def sendData(frame, c):
-    reso = 
+    reso = frame.shape[1]
     frame = frame.flatten()
     #Convert frame from a 2D array to a 1D array
     datas = frame.tostring()
