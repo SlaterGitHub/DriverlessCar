@@ -43,7 +43,6 @@ size = 50
 Range = 1000
 numbers = [None]*size
 y = 2
-runs = 0
 
 for x in range(size):
     numbers[x] = rdm.randint(1, Range)
@@ -51,6 +50,5 @@ for x in range(size):
 while listSorted(numbers) == False:
     numbers = mergeSort(numbers, y, [])
     y += y
-    runs += 1
 
 print(numbers)
