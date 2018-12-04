@@ -12,6 +12,8 @@ direction = "3"
 r = cn.getConnection()"""
 recvSpeed = Thread(target = cn.recvData)
 recvSpeed.start()
+Drive = Thread(target = dc.setDirection)
+Drive.start()
 while True:
     frame = cam.getFrame()
     stopSigns, speedSigns, grey = detect.setCascFilter(frame)
@@ -19,9 +21,9 @@ while True:
     frame = detect.getSign(frame, speedSigns)
     frame = detect.getSign(frame, stopSigns)
     for (x, y, w, h) in speedSigns:
-        Thread(target = cn.sendData, args = (frame[y:y+h, x:x+w], c)).start()
+        Thread(target = cn.sendData, args = (grey[y:y+h, x:x+w], c)).start()
     speed = getSpeed()
     direction = dr.getDirection(averageX)
-    dc.setDirection(direction, speed)
+    dc.setVariables(direction, speed)
     
     

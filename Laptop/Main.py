@@ -1,7 +1,6 @@
 import cv2
 import Detection as detect
 import Connection2 as cn
-import Direction as Dir
 from threading import Thread
 speed = "50"
 direction = "3"
