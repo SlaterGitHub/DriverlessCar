@@ -4,14 +4,7 @@ import Camera as cam
 import time
 import DistanceSensor as dist
 import DriveCar as dc
-<<<<<<< HEAD
 c, r = cn.getConnection()
-=======
-import Direction as dr
-c, r = cn.setConnection()
-speed = 0.2
-direction = "3"
->>>>>>> 8686e577f82a676ce434c031623075ad2c17f0e7
 """time.sleep(1)
 r = cn.getConnection()"""
 recvSpeed = Thread(target = cn.recvData)
@@ -29,5 +22,3 @@ while True:
     speed = getSpeed()
     direction = dr.getDirection(averageX)
     dc.setVariables(direction, speed)
-    
-    
