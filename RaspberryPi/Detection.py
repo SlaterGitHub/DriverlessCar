@@ -86,5 +86,4 @@ def setCascFilter(frame):
         minSize=(50, 50),
         flags=cv2.CASCADE_SCALE_IMAGE
         )
-    cv2.waitKey(1)
     return stopSigns, speedSigns, grey
