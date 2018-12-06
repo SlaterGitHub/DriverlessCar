@@ -1,6 +1,7 @@
 import socket
 import numpy as np
 import lz4.frame
+import Detection as dt
 socketNum = 5001
 socketNum2 = 6001
 ip = "192.168.0.29"
@@ -53,12 +54,12 @@ def getData():
         resolution = int(list[len(list)-1])
         data = recvall(size)
         #If data is found then run the recvieve all function
-        if not data:
-            return None
-        frame = np.fromstring(lz4.decompress(data), dtype=np.uint8)
-        return frame.reshape((reso, reso, 3))
+        if data != None or '':
+            frame = (np.fromstring(lz4.decompress(data), dtype=np.uint8)).reshape((reso, reso, 3))
+            frame = cv2.cvtColor(frame, GRAY2BGR)
+            sendData(dt.getText(frame))
         #Convert bytes to pixels and convert then from a 1D array to a 2D array
 
-def sendData(direction, text, m):
+def sendData(text):
     data = str(direction) + str(text)
     m.sendall(data)
