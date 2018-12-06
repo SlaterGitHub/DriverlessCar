@@ -8,7 +8,7 @@ dataSize = 0
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def setConnection():
+def getConnection():
     s.bind(("localhost", (socketNum)))
     #Create a server side socket
     print("binded")

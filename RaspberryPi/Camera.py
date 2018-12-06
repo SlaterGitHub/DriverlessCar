@@ -12,7 +12,6 @@ time.sleep(0.1)
 #wait for camera to warm up
 
 def getFrame():
-    while True:
-        ret, frame = vid.read()
-        #recv a frame from the camera
-        return frame
+    ret, frame = vid.read()
+    #recv a frame from the camera
+    return frame

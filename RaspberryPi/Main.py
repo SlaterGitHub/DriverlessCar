@@ -4,7 +4,7 @@ import Camera as cam
 import time
 import DistanceSensor as dist
 import DriveCar as dc
-c, r = cn.setConnection()
+c, r = cn.getConnection()
 """time.sleep(1)
 r = cn.getConnection()"""
 #direction, speed = Thread(target = cn.recvData).start()
