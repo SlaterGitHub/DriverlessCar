@@ -1,8 +1,6 @@
 def getDirection(averageX):
     centered = averageX - 160
 
-    print(abs(centered))
-
     if abs(centered) <= 60:
         direction = "0"
     elif centered < -60:
