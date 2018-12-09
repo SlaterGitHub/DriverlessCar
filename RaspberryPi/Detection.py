@@ -1,10 +1,6 @@
 import cv2
-import os
-from pytesseract import image_to_string
 import numpy as np
 import imutils
-from PIL import Image
-from time import sleep
 
 StopPth = 'C:\Users\Ryan\Documents\Python Work\DriverlessCar\Laptop\stopsign_classifier.xml'
 SpeedPth = "\Users\\Ryan\\Documents\\Python Work\\DriverlessCar\\Laptop\\Speedlimit_HAAR_ 13Stages.xml"

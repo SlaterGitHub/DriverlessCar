@@ -1,6 +1,5 @@
 import cv2
 import numpy
-import time
 
 vid = cv2.VideoCapture(0)
 #Use opencv to recognise the USB camera
