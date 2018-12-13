@@ -25,10 +25,6 @@ def getConnection():
     #Connect to server side of socket
     return speedFrame, speedText
 
-"""def getConnection():
-    r.connect((ip, socketNum2))
-    return r"""
-
 def recvData():
     while True:
         speed = r.recv(2)
