@@ -15,12 +15,15 @@ def getConnection():
     print("binded")
     s.listen(10)
     #Wait for a recieving side to connect
-    c, addr = s.accept()
+    speedFrame, addr = s.accept()
     #set socket to c when recieving side connects
 
-    r.connect((ip, socketNum2))
+    r.bind(("localhost", socketNum2))
+    r.listen(10)
+    speedtext, addr = r.accept()
+
     #Connect to server side of socket
-    return c, r
+    return speedFrame, speedText
 
 """def getConnection():
     r.connect((ip, socketNum2))

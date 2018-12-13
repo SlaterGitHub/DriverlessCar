@@ -5,7 +5,6 @@ import Detection as dt
 socketNum = 5001
 socketNum2 = 6001
 ip = "192.168.0.29"
-ip2 = "192.168.0.27"
 x = 0
 y = 0
 dataSize = 0
@@ -15,16 +14,10 @@ r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 def getConnection():
     w.connect((ip, socketNum))
     #Recieve connection with server
-    print("Laptop <-- Pipeline: Connected")
-
-    r.bind((ip2, socketNum2))
-    #Create a server side pipeline
-    r.listen(10)
-    #wait for a response
-    m, addr = r.accept()
+    r.connect(ip, socketNum2)
     #save socket as m once accepted by client
     print("Pipeline --> Raspberry: Connected")
-    return m
+    return
 
 def close():
     w.close()
