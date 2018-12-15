@@ -14,7 +14,7 @@ r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 def getConnection():
     w.connect((ip, socketNum))
     #Recieve connection with server
-    r.connect(ip, socketNum2)
+    r.connect(ip, socketNum)
     #save socket as m once accepted by client
     print("Pipeline --> Raspberry: Connected")
     return
