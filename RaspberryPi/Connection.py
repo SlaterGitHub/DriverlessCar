@@ -4,7 +4,6 @@ import lz4.frame
 socketNum = 5001
 socketNum2 = 6001
 ip = "localhost"
-dataSize = 0
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 speed = None
