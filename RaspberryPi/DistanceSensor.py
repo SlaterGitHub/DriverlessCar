@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
-import time.sleep
+import time
 #import libraries
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 #set GPIO to be pin names
 GPIO_TRIGGER = 18
 GPIO_ECHO = 24

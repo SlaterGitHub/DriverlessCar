@@ -4,11 +4,16 @@ import Camera as cam
 import time
 import DistanceSensor as dist
 import DriveCar as dc
-c, r = cn.getConnection()
+import Detection as detect
+import Direction as dr
+
+speed = 0.02
+direction = 3
+#c, r = cn.getConnection()
 """time.sleep(1)
 r = cn.getConnection()"""
-recvSpeed = Thread(target = cn.recvData)
-recvSpeed.start()
+#recvSpeed = Thread(target = cn.recvData)
+#recvSpeed.start()
 Drive = Thread(target = dc.setDirection)
 Drive.start()
 while True:
@@ -17,8 +22,13 @@ while True:
     frame, averageX = detect.getPath(frame, grey)
     frame = detect.getSign(frame, speedSigns)
     frame = detect.getSign(frame, stopSigns)
-    for (x, y, w, h) in speedSigns:
+    """for (x, y, w, h) in speedSigns:
         Thread(target = cn.sendData, args = (grey[y:y+h, x:x+w], c)).start()
-    speed = getSpeed()
-    direction = dr.getDirection(averageX)
+    speed = getSpeed()"""
+    if averageX != None:
+        direction = dr.getDirection(averageX)
     dc.setVariables(direction, speed)
+    
+
+    
+

@@ -46,20 +46,23 @@ needed and turns the motor off and on at a high frequancy to make the car move
 different speeds"""
 
 def setDirection():
-    global path
-    global freq
-        while True:
-            if path == 0:
-                forward(freq)
-            elif path == 1:
-                left(freq)
-            elif path == 2:
-                right(freq)
-            elif path == 3:
-                stop(freq)
+    while True:
+        global path
+        global freq
+        print(path)
+        if path == 0:
+            forward(freq)
+        elif path == 1:
+            left(freq)
+        elif path == 2:
+            right(freq)
+        elif path == 3:
+            stop(freq)
     """Depending on the value of path, 1 of 4 functions are run and passed the speed"""
 
 def setVariables(direction, speed):
+    global path
+    global freq
     path = direction
     freq = speed
     #Set the variables in the class

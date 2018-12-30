@@ -2,13 +2,13 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = 'C:\Users\Ryan\Documents\Python Work\DriverlessCar\Laptop\stopsign_classifier.xml'
-SpeedPth = "\Users\\Ryan\\Documents\\Python Work\\DriverlessCar\\Laptop\\Speedlimit_HAAR_ 13Stages.xml"
+StopPth = '/home/pi/DriverlessCar/Laptop/stopsign_classifier.xml'
+SpeedPth = "/home/pi/DriverlessCar/Laptop/Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
 #boundries = [([230, 230, 230], [255, 255, 255])]
 #For red hair
-boundries = [([0, 0, 180], [150, 150, 255])]
+boundries = [([0, 0, 150], [200, 200, 255])]
 
 def getPath(frame, grey):
     for (lower, upper) in boundries:
@@ -41,16 +41,15 @@ def getPath(frame, grey):
                 MaxContour = max(contours, key=cv2.contourArea)
                 #find the biggest item in the contours array
                 try:
-                    ContourIndx = contours.index(MaxContour)
+                    #ContourIndx = contours.index(MaxContour)
                     #get the index of the biggest item
                     Moments = cv2.moments(MaxContour)
                     #get the y, x, w, h value of the contour
                     centers.append((int(Moments["m10"] / Moments["m00"]),
                                     int(Moments["m01"] / Moments["m00"])))
                     #add that contour to a list of centers
-                    del contours[int(ContourIndx)]
+                    contours.remove(MaxContour)
                     #remove biggest contour from array
-                    contourIndx = 0
                     x[i], y[i] = centers[i]
                     #get the x and y value of the center of the biggest contour
                     if i == 1:
@@ -73,11 +72,14 @@ def getPath(frame, grey):
 
         frame[200:210, 0:320] = output
         #replace the pixels of the section in frame with the processed ones
-
+        
         try:
-            return frame, average
+            return frame, averageX
         except:
-            return None, None
+            try:
+                return frame, None
+            except:
+                return None, None
 
 def getSign(frame, Casc):
     for (x, y, w, h) in Casc:
