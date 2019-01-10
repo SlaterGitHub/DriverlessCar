@@ -22,13 +22,16 @@ while True:
     frame, averageX = detect.getPath(frame, grey)
     frame = detect.getSign(frame, speedSigns)
     frame = detect.getSign(frame, stopSigns)
+
     for (x, y, w, h) in speedSigns:
         Thread(target = cn.sendData, args = (grey[y:y+h, x:x+w], c)).start()
+
     speed = getSpeed()
+
     if averageX != None:
         direction = dr.getDirection(averageX)
         cv2.circle(frame, (averageX, 205), 3, (0, 255, 255), -1)
-    cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
 
+    cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
 
     dc.setVariables(direction, speed)

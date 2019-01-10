@@ -2,6 +2,7 @@ import cv2
 import Detection as detect
 import Connection2 as cn
 from threading import Thread
+
 speed = "50"
 
 recvSign = Thread(target = cn.recvSign)

@@ -21,6 +21,10 @@ def getConnection():
     r.listen(10)
     speedtext, addr = r.accept()
 
+    c.bind(("localhost", socketNum2))
+    c.listen(10)
+    fullFrame, addr = c.accept()
+
     #Connect to server side of socket
     return speedFrame, speedText
 
@@ -43,15 +47,22 @@ def getSpeed():
 
 def sendData(frame, c):
     reso = frame.shape[1]
-    frame = frame.flatten()
-    #Convert frame from a 2D array to a 1D array
-    datas = frame.tostring()
-    datas = lz4.frame.compress(datas)
+    datas = prepData(frame)
     size = str(len(datas))
     for x in range(6-len(size)):
         size = "," + size
     for x in range(3-len(reso)):
         reso = "," + reso
-    c.sendall(size+reso+datas)
+    speedFrame.sendall(size+reso+datas)
     return
     #Convert to a string form and send the entire frame
+
+def prepData(frame):
+    frame = frame.flatten()
+    #Convert frame from a 2D array to a 1D array
+    datas = frame.tostring()
+    return lz4.frame.compress(datas)
+
+def sendFrame(frame):
+    datas = prepData(frame)
+    fullFrame.sendall(datas)
