@@ -11,7 +11,7 @@ GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 #set pin 24 to be an input pin
 
-def getDistance():
+def findDistance():
     GPIO.output(GPIO_TRIGGER, True)
     #output voltage
     time.sleep(0.00001)
@@ -34,4 +34,7 @@ def getDistance():
         #Convert distance to cm measurement
         gpio.cleanup()
         #set pins back to default settings
-        return distance
+
+def getDistance():
+    global distance
+    return distance

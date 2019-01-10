@@ -41,7 +41,7 @@ def recvData():
 def getSpeed():
     data = speedText.recv(2)
     if data != None or '':
-        speed = data.decode()
+        speed = int(data.decode())
         return speed
     return speed
 
