@@ -6,7 +6,7 @@ socketNum2 = 6001
 ip = "localhost"
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-speed = None
+speed = "50"
 
 def getConnection():
     s.bind(("localhost", (socketNum)))
@@ -35,6 +35,10 @@ def recvData():
             #the higher the number on the sign the lower the inverse number will be
 
 def getSpeed():
+    data = speedText.recv(2)
+    if data != None or '':
+        speed = data.decode()
+        return speed
     return speed
 
 def sendData(frame, c):
