@@ -41,4 +41,7 @@ while True:
     if distance < 10:
         speed = 0
 
+    for (x, y, w, h) in  stopSigns:
+        speed = 0
+
     dc.setVariables(direction, speed)
