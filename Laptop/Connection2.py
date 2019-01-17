@@ -7,7 +7,7 @@ ip = "192.168.0.29"
 x = 0
 y = 0
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def getConnection():
     #Recieve connection with server

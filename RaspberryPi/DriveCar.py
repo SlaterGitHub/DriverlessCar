@@ -1,5 +1,6 @@
 import RPi.GPIO as gpio
 import time
+from threading import Thread
 gpio.setmode(gpio.BOARD)
 gpio.setup(7, gpio.OUT)
 gpio.setup(11, gpio.OUT)
@@ -8,47 +9,52 @@ gpio.setup(15, gpio.OUT)
 #create gpio and set pins to be output mode
 
 path = 3
-freq = 0.2
+freq = 50
+velocity = 50
 #set starting speed and direction to stop
 
-def forward(speed):
-    gpio.output(7, True)
-    gpio.output(11, False)
-    gpio.output(13, False)
-    gpio.output(15, True)
-    time.sleep(speed)
-    stop(speed)
+wheel = [gpio.PWM(7, freq), gpio.PWM(11, freq), gpio.PWM(13, freq), gpio.PWM(15, freq)]
+for x in range(4):
+    wheel[x].start(0)
 
-def left(speed):
-    gpio.output(7, True)
-    gpio.output(11, False)
-    gpio.output(13, True)
-    gpio.output(15, False)
-    time.sleep(speed)
-    stop(speed)
+def forward(velocity):
+    wheel[0].changeDutyCycle(velocity)
+    wheel[1].changeDutyCycle(0)
+    wheel[2].changeDutyCycle(0)
+    wheel[3].changeDutyCycle(velocity)
 
-def right(speed):
-    gpio.output(7, False)
-    gpio.output(11, True)
-    gpio.output(13, False)
-    gpio.output(15, True)
-    time.sleep(speed)
-    stop(speed)
+def left(velocity):
+    wheel[0].changeDutyCycle(velocity)
+    wheel[1].changeDutyCycle(0)
+    wheel[2].changeDutyCycle(velocity)
+    wheel[3].changeDutyCycle(0)
 
-def stop(speed):
-    gpio.output(7, False)
-    gpio.output(11, False)
-    gpio.output(13, False)
-    gpio.output(15, False)
-    time.sleep(speed)
+def right(velocity):
+    wheel[0].changeDutyCycle(0)
+    wheel[1].changeDutyCycle(velocity)
+    wheel[2].changeDutyCycle(0)
+    wheel[3].changeDutyCycle(velocity)
+
+def stop(velocity):
+    for x in range(4):
+        wheel[x].changeDutyCycle(velocity)
 """When a function runs it changes the voltage given to each motor to get the direction
 needed and turns the motor off and on at a high frequancy to make the car move
 different speeds"""
 
+def accelerate(finalSpeed):
+    global velocity
+    changeInSpeed = finalSpeed - velocity
+    timeInterval = 1/changeInSpeed
+    for x in range(changeInSpeed):
+        velocity = velocity - x
+        time.sleep(timeInterval)
+    return
+
 def setDirection():
     while True:
         global path
-        global freq
+        global velocity
         print(path)
         if path == 0:
             forward(freq)
@@ -60,9 +66,12 @@ def setDirection():
             stop(freq)
     """Depending on the value of path, 1 of 4 functions are run and passed the speed"""
 
-def setVariables(direction, speed):
+def setDirection(direction):
     global path
-    global freq
     path = direction
-    freq = speed
-    #Set the variables in the class
+
+def setSpeed(speed):
+    global velocity
+    if speed != (0.5 * velocity):
+        velocity = 2 * speed
+        Thread(target = accelerate, args = velocity)

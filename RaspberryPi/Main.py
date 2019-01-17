@@ -9,7 +9,7 @@ import Direction as dr
 
 speed = 0.02
 direction = 3
-#c, r = cn.getConnection()
+c = cn.getConnection()
 """time.sleep(1)
 r = cn.getConnection()"""
 #recvSpeed = Thread(target = cn.recvData)
@@ -27,8 +27,14 @@ while True:
 
     for (x, y, w, h) in speedSigns:
         Thread(target = cn.sendData, args = (grey[y:y+h, x:x+w], c)).start()
-
-    speed = cn.getSpeed()
+    if cn.getSpeed() != speed:
+        speed = cn.getSpeed()
+        distance = dist.getDistance()
+        if distance < 10:
+            speed = 0
+        for (x, y, w, h) in  stopSigns:
+            speed = 0
+        dc.setSpeed(speed)
 
     if averageX != None:
         direction = dr.getDirection(averageX)
@@ -36,12 +42,4 @@ while True:
 
     cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
 
-    distance = dist.getDistance()
-
-    if distance < 10:
-        speed = 0
-
-    for (x, y, w, h) in  stopSigns:
-        speed = 0
-
-    dc.setVariables(direction, speed)
+    dc.setDirection(direction)
