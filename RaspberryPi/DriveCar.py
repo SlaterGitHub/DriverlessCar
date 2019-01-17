@@ -74,4 +74,4 @@ def setSpeed(speed):
     global velocity
     if speed != (0.5 * velocity):
         velocity = 2 * speed
-        Thread(target = accelerate, args = velocity)
+        Thread(target = accelerate, args = velocity).start()
