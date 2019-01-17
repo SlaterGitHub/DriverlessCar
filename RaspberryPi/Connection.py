@@ -2,28 +2,28 @@ import socket
 import numpy
 import lz4.frame
 socketNum = 5001
-socketNum2 = 6001
 ip = "localhost"
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 speed = 50
 
 def getConnection():
-    s.bind(("localhost", (socketNum)))
+    pipeline1.bind(("localhost", (socketNum)))
     #Create a server side socket
     print("binded")
-    s.listen(10)
+    pipeline1.listen(10)
     #Wait for a recieving side to connect
-    speedFrame, addr = s.accept()
+    speedFrame, addr = pipeline1.accept()
     #set socket to c when recieving side connects
 
-    r.bind(("localhost", socketNum2))
-    r.listen(10)
-    speedtext, addr = r.accept()
+    pipeline2.bind(("localhost", socketNum+100))
+    pipeline2.listen(10)
+    speedtext, addr = pipeline2.accept()
 
-    c.bind(("localhost", socketNum2))
-    c.listen(10)
-    fullFrame, addr = c.accept()
+    pipeline3.bind(("localhost", socketNum+200))
+    pipeline3.listen(10)
+    fullFrame, addr = pipeline3.accept()
 
     #Connect to server side of socket
     return speedFrame, speedText
@@ -43,7 +43,7 @@ def sendData(frame, c):
         size = "," + size
     for x in range(3-len(reso)):
         reso = "," + reso
-    speedFrame.sendall(size+reso+datas)
+    c.sendall(size+reso+datas)
     return
     #Convert to a string form and send the entire frame
 

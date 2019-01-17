@@ -43,3 +43,4 @@ while True:
     cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
 
     dc.setDirection(direction)
+    sendFrame(frame)

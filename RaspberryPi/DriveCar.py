@@ -47,7 +47,7 @@ def accelerate(finalSpeed):
     changeInSpeed = finalSpeed - velocity
     timeInterval = 1/changeInSpeed
     for x in range(changeInSpeed):
-        velocity = velocity - x
+        velocity -= x
         time.sleep(timeInterval)
     return
 

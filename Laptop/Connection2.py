@@ -4,8 +4,6 @@ import lz4.frame
 import Detection as dt
 socketNum = 5001
 ip = "192.168.0.29"
-x = 0
-y = 0
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -57,5 +55,5 @@ def reform(frame, channels, x, y):
     return frame
 
 def sendData(text):
-    data = str(direction) + str(text)
+    data = str(text)
     pipeline2.sendall(data)
