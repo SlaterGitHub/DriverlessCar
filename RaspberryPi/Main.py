@@ -2,11 +2,13 @@ from threading import Thread
 import Connection as cn
 import Camera as cam
 import time
+import sys
 import DistanceSensor as dist
 import DriveCar as dc
 import Detection as detect
 import Direction as dr
 
+startProgram = time.time()
 speed = 0.02
 direction = 3
 c = cn.getConnection()
@@ -18,6 +20,12 @@ Thread(target = dist.findDistance)
 
 Drive = Thread(target = dc.setDirection)
 Drive.start()
+
+def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
+    data = [finalDistance, finalSpeed, programDuration]
+    sendFrame(finalFrame)
+    sendFinals(data)
+
 while True:
     frame = cam.getFrame()
     stopSigns, speedSigns, grey = detect.setCascFilter(frame)
@@ -27,14 +35,6 @@ while True:
 
     for (x, y, w, h) in speedSigns:
         Thread(target = cn.sendData, args = (grey[y:y+h, x:x+w], c)).start()
-    if cn.getSpeed() != speed:
-        speed = cn.getSpeed()
-        distance = dist.getDistance()
-        if distance < 10:
-            speed = 0
-        for (x, y, w, h) in  stopSigns:
-            speed = 0
-        dc.setSpeed(speed)
 
     if averageX != None:
         direction = dr.getDirection(averageX)
@@ -42,5 +42,29 @@ while True:
 
     cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
 
+    recievedSpeed = cn.getSpeed()
+
+    if recievedSpeed == 'FL':
+        finish(frame, distance, speed, (time.time()-startProgram), True)
+        setSpeed(0)
+        dc.setDirection(3)
+        break
+    elif recievedSpeed == 'SS':
+        finish(frame, distance, speed, (time.time()-startProgram), False)
+    elif recievedSpeed != speed:
+        speed = cn.getSpeed()
+        dc.setSpeed(speed)
+
+    distance = dist.getDistance()
+
+    if distance < 10:
+        speed = 0
+    for (x, y, w, h) in  stopSigns:
+        speed = 0
+
     dc.setDirection(direction)
     sendFrame(frame)
+
+time.sleep(2)
+cn.endConnection()
+sys.exit()

@@ -23,8 +23,11 @@ while True:
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord('q'):
+        cn.sendData("FL", pipeline2)
+        break
+    elif key == ord('e'):
+        cn.sendData("FL", pipeline2)
         break
 
-cn.sendData("0", pipeline2)
 cv2.destroyAllWindows()
 cn.close()

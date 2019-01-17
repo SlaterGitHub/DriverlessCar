@@ -31,6 +31,8 @@ def getConnection():
 def getSpeed():
     data = speedText.recv(2)
     if data != None or '':
+        if data.decode() == 'NA':
+            return data.decode()
         speed = int(data.decode())
         return speed
     return speed
@@ -56,3 +58,12 @@ def prepData(frame):
 def sendFrame(frame):
     datas = prepData(frame)
     fullFrame.sendall(datas)
+
+def sendFinals(data):
+    for x in range(3):
+        fullFrame.sendall(str(data[x]))
+
+def endConnection():
+    speedFrame.close()
+    speedText.close()
+    fullFrame.close()
