@@ -59,9 +59,13 @@ def sendFrame(frame):
     datas = prepData(frame)
     fullFrame.sendall(datas)
 
-def sendFinals(data):
+def sendFinals(finalFrame, data):
+    sendFrame(finalFrame)
+    time.sleep(1)
     for x in range(3):
         fullFrame.sendall(str(data[x]))
+    time.sleep(1)
+    endConnection()
 
 def endConnection():
     speedFrame.close()

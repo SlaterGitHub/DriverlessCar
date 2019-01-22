@@ -23,8 +23,7 @@ Drive.start()
 
 def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
     data = [finalDistance, finalSpeed, programDuration]
-    sendFrame(finalFrame)
-    sendFinals(data)
+    cn.sendFinals(finalFrame, data)
 
 while True:
     frame = cam.getFrame()
