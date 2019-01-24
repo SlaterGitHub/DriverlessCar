@@ -7,33 +7,46 @@ pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 speed = 50
+speedFrame = None
+speedText = None
+fullFrame = None
+data = None
 
 def getConnection():
+    global speedFrame, speedText, fullFrame
     pipeline1.bind(("localhost", (socketNum)))
     #Create a server side socket
-    print("binded")
     pipeline1.listen(10)
+    print("binded")
     #Wait for a recieving side to connect
     speedFrame, addr = pipeline1.accept()
     #set socket to c when recieving side connects
 
     pipeline2.bind(("localhost", socketNum+100))
     pipeline2.listen(10)
-    speedtext, addr = pipeline2.accept()
+    speedText, addr = pipeline2.accept()
 
     pipeline3.bind(("localhost", socketNum+200))
     pipeline3.listen(10)
     fullFrame, addr = pipeline3.accept()
+    speedFrame.setblocking(0)
+    speedText.setblocking(0)
+    fullFrame.setblocking(0)
 
     #Connect to server side of socket
-    return speedFrame, speedText
+    return speedFrame
 
 def getSpeed():
-    data = speedText.recv(2)
-    if data != None or '':
-        if data.decode() == 'NA':
-            return data.decode()
-        speed = int(data.decode())
+    global speed
+    try:
+        data = speedText.recv(2)
+    except:
+        return speed
+    data = data.decode()
+    if data != '':
+        if data == 'NA':
+            return data
+        speed = int(data)
         return speed
     return speed
 

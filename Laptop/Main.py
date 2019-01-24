@@ -13,12 +13,13 @@ pipeline3, pipeline2 = cn.getConnection()
 recvSign.start()
 #cn.setConnection()
 while True:
-    data = recvall(921600, pipeline3)
-
+    data = cn.recvall(921600, pipeline3)
     if data != None or '':
-        frame = reform(data, 3, 640, 480)
-
-    cv2.imshow(frame, "Car View")
+        frame = cn.reform(data, 3, 640, 480)
+        try:
+            cv2.imshow(frame, "Car View")
+        except:
+            print("none")
 
     key = cv2.waitKey(1) & 0xFF
 

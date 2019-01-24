@@ -3,9 +3,12 @@ import numpy as np
 import lz4.frame
 import Detection as dt
 socketNum = 5001
-ip = "192.168.0.29"
+ip = "localhost"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+size = None
+resolution = None
 
 def getConnection():
     #Recieve connection with server
@@ -13,6 +16,9 @@ def getConnection():
     pipeline2.connect((ip, socketNum + 100))
     pipeline3.connect((ip, socketNum + 200))
     #save socket as m once accepted by client
+    pipeline1.settimeout(0.1)
+    pipeline2.settimeout(0.1)
+    pipeline3.settimeout(0.1)
     print("Pipeline --> Raspberry: Connected")
     return pipeline3, pipeline2
 
@@ -24,8 +30,11 @@ def recvall(dataSize, pipeline):
     data = b''
     #Make empty byte variable
     while len(data) < dataSize:
-        packet = pipeline.recv(dataSize - len(data))
-        #Only recieve data that is as long as needed
+        try:
+            packet = pipeline.recv(dataSize - len(data))
+            #Only recieve data that is as long as needed
+        except:
+            return None
         if not packet:
             return None
             #If data is not found then the server hasn't sent anything
@@ -34,10 +43,13 @@ def recvall(dataSize, pipeline):
     return data
 
 def recvSign():
-    size = pipeline1.recv(6)
-    resolution = pipeline1.recv(3)
-
-    if data != None or '':
+    try:
+        size = pipeline1.recv(6)
+        resolution = pipeline1.recv(3)
+    except:
+        size = None
+        resolution = None
+    if (size != None or '') and (resolution != None or ''):
         list = (size.decode()).split(',')
         size = int(list[len(list)-1])
         list = (resolution.decode()).split(',')
@@ -50,8 +62,8 @@ def recvSign():
             sendData(dt.getText(frame))
         #Convert bytes to pixels and convert then from a 1D array to a 2D array
 
-def reform(frame, channels, x, y):
-    frame = (np.fromstring(lz4.decompress(data), dtype=np.uint8)).reshape((x, y, channels))
+def reform(data, channels, x, y):
+    frame = (np.fromstring(lz4.frame.decompress(data), dtype = "uint8")).reshape((x, y, channels))
     return frame
 
 def sendData(text):

@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = '/home/pi/DriverlessCar/Laptop/stopsign_classifier.xml'
-SpeedPth = "/home/pi/DriverlessCar/Laptop/Speedlimit_HAAR_ 13Stages.xml"
+StopPth = 'C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\stopsign_classifier.xml'
+SpeedPth = "C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
 #boundries = [([230, 230, 230], [255, 255, 255])]
@@ -72,7 +72,7 @@ def getPath(frame, grey):
 
         frame[200:210, 0:320] = output
         #replace the pixels of the section in frame with the processed ones
-        
+
         try:
             return frame, averageX
         except:
