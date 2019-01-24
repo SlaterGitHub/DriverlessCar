@@ -10,7 +10,6 @@ video.set(4, 480)
 
 def getFrame():
     ret, frame = video.read()
-    cv2.imshow("test", frame)
     #recv a frame from the camera
     cv2.waitKey(1)
     return frame

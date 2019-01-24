@@ -61,6 +61,7 @@ while True:
         speed = 0
 
     #dc.setDirection(direction)
+    cv2.imshow("test", frame)
     cn.sendFrame(frame)
 
 time.sleep(2)

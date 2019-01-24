@@ -29,9 +29,9 @@ def getConnection():
     pipeline3.bind(("localhost", socketNum+200))
     pipeline3.listen(10)
     fullFrame, addr = pipeline3.accept()
-    speedFrame.setblocking(0)
     speedText.setblocking(0)
-    fullFrame.setblocking(0)
+    #fullFrame and speedFrame are output pipelines
+    #speedText is an input pipeline
 
     #Connect to server side of socket
     return speedFrame
@@ -51,7 +51,7 @@ def getSpeed():
     return speed
 
 def sendData(frame, c):
-    reso = frame.shape[1]
+    reso = str(frame.shape[1])
     datas = prepData(frame)
     size = str(len(datas))
     for x in range(6-len(size)):
@@ -69,8 +69,7 @@ def prepData(frame):
     return lz4.frame.compress(datas)
 
 def sendFrame(frame):
-    datas = prepData(frame)
-    fullFrame.sendall(datas)
+    sendData(frame, fullFrame)
 
 def sendFinals(finalFrame, data):
     sendFrame(finalFrame)

@@ -20,7 +20,7 @@ def getConnection():
     pipeline2.settimeout(0.1)
     pipeline3.settimeout(0.1)
     print("Pipeline --> Raspberry: Connected")
-    return pipeline3, pipeline2
+    return pipeline3, pipeline2, pipeline1
 
 def close():
     pipeline1.close()
@@ -42,13 +42,8 @@ def recvall(dataSize, pipeline):
         #add data recieved to the total data
     return data
 
-def recvSign():
-    try:
-        size = pipeline1.recv(6)
-        resolution = pipeline1.recv(3)
-    except:
-        size = None
-        resolution = None
+def recvSign(pipeline):
+    size, resolution = recvDimensions(pipeline)
     if (size != None or '') and (resolution != None or ''):
         list = (size.decode()).split(',')
         size = int(list[len(list)-1])
@@ -62,8 +57,18 @@ def recvSign():
             sendData(dt.getText(frame))
         #Convert bytes to pixels and convert then from a 1D array to a 2D array
 
+def recvDimensions(pipeline):
+        try:
+            size = pipeline.recv(6)
+            resolution = pipeline.recv(3)
+            return size, resolution
+        except:
+            return None, None
+
 def reform(data, channels, x, y):
-    frame = (np.fromstring(lz4.frame.decompress(data), dtype = "uint8")).reshape((x, y, channels))
+    data = lz4.frame.decompress(data)
+    data = np.fromstring(data, dtype = "uint8")
+    frame = data.reshape((x, y, channels))
     return frame
 
 def sendData(text):
