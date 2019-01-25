@@ -61,8 +61,9 @@ while True:
         speed = 0
 
     #dc.setDirection(direction)
-    cv2.imshow("test", frame)
-    cn.sendFrame(frame)
+    if frame is not None:
+        cn.sendFrame(frame)
+
 
 time.sleep(2)
 cn.endConnection()

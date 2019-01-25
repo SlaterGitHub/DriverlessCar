@@ -3,8 +3,8 @@ import time
 
 video = cv2.VideoCapture(0)
 #Use opencv to recognise the USB camera
-video.set(3, 640)
-video.set(4, 480)
+video.set(3, 320)
+video.set(4, 240)
 #set the resolution of the camera
 #wait for camera to warm up
 

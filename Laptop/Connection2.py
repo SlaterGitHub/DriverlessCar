@@ -13,12 +13,15 @@ resolution = None
 def getConnection():
     #Recieve connection with server
     pipeline1.connect((ip, socketNum))
+    #input
     pipeline2.connect((ip, socketNum + 100))
+    #output
     pipeline3.connect((ip, socketNum + 200))
+    #input
     #save socket as m once accepted by client
-    pipeline1.settimeout(0.1)
-    pipeline2.settimeout(0.1)
-    pipeline3.settimeout(0.1)
+    pipeline1.settimeout(0.4)
+    pipeline2.settimeout(0.4)
+    pipeline3.settimeout(5)
     print("Pipeline --> Raspberry: Connected")
     return pipeline3, pipeline2, pipeline1
 
@@ -42,33 +45,40 @@ def recvall(dataSize, pipeline):
         #add data recieved to the total data
     return data
 
-def recvSign(pipeline):
-    size, resolution = recvDimensions(pipeline)
+def recvVarFrame(pipeline, speedSign):
+    try:
+        size = pipeline.recv(6)
+        resolution = pipeline.recv(3)
+    except:
+        size = None
+        resolution = None
     if (size != None or '') and (resolution != None or ''):
         list = (size.decode()).split(',')
         size = int(list[len(list)-1])
         list = (resolution.decode()).split(',')
         resolution = int(list[len(list)-1])
-        data = recvall(size, pipeline1)
+        data = recvall(size, pipeline)
         #If data is found then run the recvieve all function
         if data != None or '':
-            frame = reform(data, 1, reso, reso)
-            frame = cv2.cvtColor(frame, GRAY2BGR)
-            sendData(dt.getText(frame))
-        #Convert bytes to pixels and convert then from a 1D array to a 2D array
+            if speedSign == True:
+                frame = reform(data, 1, reso, reso)
+                frame = cv2.cvtColor(frame, GRAY2BGR)
+                sendData(dt.getText(frame))
+            else:
+                frame = reform(data, 3, 320, 240)
+                return frame
+    if speedSign == False:
+        return None
 
-def recvDimensions(pipeline):
-        try:
-            size = pipeline.recv(6)
-            resolution = pipeline.recv(3)
-            return size, resolution
-        except:
-            return None, None
+"""def recvDimensions(pipeline):
+        size = pipeline.recv(6)
+        resolution = pipeline.recv(3)
+        return size, resolution"""
 
 def reform(data, channels, x, y):
     data = lz4.frame.decompress(data)
     data = np.fromstring(data, dtype = "uint8")
-    frame = data.reshape((x, y, channels))
+    frame = data.reshape((y, x, channels))
     return frame
 
 def sendData(text):

@@ -59,6 +59,7 @@ def sendData(frame, c):
     for x in range(3-len(reso)):
         reso = "," + reso
     c.sendall(size+reso+datas)
+    #print("Raspberry" + str(size))
     return
     #Convert to a string form and send the entire frame
 

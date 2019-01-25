@@ -57,6 +57,7 @@ def getPath(frame, grey):
                         #calculate the average x value of the 2 biggest contours
                 except ValueError:
                     print("Value Error")
+                    averageX = None
 
         inBound = cv2.bitwise_or(TrimFrame, TrimFrame, mask = mask2)
         #find the pixels that are inbound to the boudries
@@ -76,10 +77,7 @@ def getPath(frame, grey):
         try:
             return frame, averageX
         except:
-            try:
-                return frame, None
-            except:
-                return None, None
+            return None, None
 
 def getSign(frame, Casc):
     for (x, y, w, h) in Casc:
