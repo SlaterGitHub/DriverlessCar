@@ -7,7 +7,6 @@ ip = "localhost"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-speed = 50
 speedFrame = None
 speedText = None
 fullFrame = None
@@ -31,7 +30,7 @@ def getConnection():
     pipeline3.listen(10)
     fullFrame, addr = pipeline3.accept()
     speedText.setblocking(0)
-    speedFrame.setblocking(0)
+    speedFrame.settimeout(0.2)
     #fullFrame and speedFrame are output pipelines
     #speedText is an input pipeline
 
@@ -39,18 +38,17 @@ def getConnection():
     return speedFrame
 
 def getSpeed():
-    global speed
     try:
         data = speedText.recv(2)
     except:
-        return speed
+        return None
     data = data.decode()
     if data != '':
         if data == 'FL' or 'SS':
             return data
         speed = int(data)
         return speed
-    return speed
+    return None
 
 def sendData(frame, c):
     reso = frame.shape[1]

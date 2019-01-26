@@ -51,10 +51,12 @@ while True:
     elif recievedSpeed == 'SS':
         finish(frame, distance, speed, (time.time()-startProgram), "0")
         break
-    """elif recievedSpeed != speed:
-        dc.setSpeed(speed)
+    elif recievedSpeed != speed:
+        if recievedSpeed != None:
+            speed = recievedSpeed
+            #dc.setSpeed(speed)
 
-    distance = dist.getDistance()"""
+    #distance = dist.getDistance()
 
     """if distance < 10:
         speed = 0

@@ -72,6 +72,6 @@ def setDirection(direction):
 
 def setSpeed(speed):
     global velocity
-    if speed != (0.5 * velocity):
+    if (speed != (0.5 * velocity)) and (speed != None):
         velocity = 2 * speed
         Thread(target = accelerate, args = velocity).start()

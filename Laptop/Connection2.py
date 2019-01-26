@@ -66,9 +66,7 @@ def recvVarFrame(pipeline, speedSign):
                 recvText = dt.getText(frame)
                 if recvText != text or None:
                     text = recvText
-                    print(text)
                     sendData(text)
-                    time.sleep(0.5)
             else:
                 frame = reform(data, 3, 320, 240)
                 return frame
