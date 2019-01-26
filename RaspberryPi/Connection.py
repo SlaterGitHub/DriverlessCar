@@ -31,6 +31,7 @@ def getConnection():
     pipeline3.listen(10)
     fullFrame, addr = pipeline3.accept()
     speedText.setblocking(0)
+    speedFrame.setblocking(0)
     #fullFrame and speedFrame are output pipelines
     #speedText is an input pipeline
 
@@ -76,7 +77,7 @@ def sendFinals(finalFrame, data):
     data[0] = constVarLength(3, data[0])
     data[1] = constVarLength(2, data[1])
     data[2] = constVarLength(3, data[2])
-    fullFrame.sendall(data[0] + data[1] + data[2])
+    fullFrame.sendall(data[0] + data[1] + data[2] + data[3])
     time.sleep(1)
     endConnection()
 

@@ -2,6 +2,7 @@ import socket
 import numpy as np
 import lz4.frame
 import Detection as dt
+import time
 socketNum = 5001
 ip = "localhost"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -9,6 +10,7 @@ pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 size = None
 resolution = None
+text = None
 
 def getConnection():
     #Recieve connection with server
@@ -46,6 +48,7 @@ def recvall(dataSize, pipeline):
     return data
 
 def recvVarFrame(pipeline, speedSign):
+    global text
     try:
         size = pipeline.recv(6)
         resolution = pipeline.recv(3)
@@ -59,14 +62,17 @@ def recvVarFrame(pipeline, speedSign):
         #If data is found then run the recvieve all function
         if data != None or '':
             if speedSign == True:
-                frame = reform(data, 1, reso, reso)
-                frame = cv2.cvtColor(frame, GRAY2BGR)
-                sendData(dt.getText(frame))
+                frame = reform(data, 1, resolution, resolution)
+                recvText = dt.getText(frame)
+                if recvText != text or None:
+                    text = recvText
+                    print(text)
+                    sendData(text)
+                    time.sleep(0.5)
             else:
                 frame = reform(data, 3, 320, 240)
                 return frame
-    if speedSign == False:
-        return None
+    return None
 
 """def recvDimensions(pipeline):
         size = pipeline.recv(6)
@@ -89,16 +95,21 @@ def recvFinals():
     while (recieved == False):
         if not frame:
             frame = recvVarFrame(pipeline3, False)
-            datas = recvall(8, pipeline3)
+            datas = recvall(9, pipeline3)
             if (frame is not None) and (datas != None or ''):
                 recieved = True
     print(datas)
     finalDistance = splitData(datas[:3])
     finalSpeed = splitData(datas[3:5])
     progDuration = splitData(datas[5:8])
-    return frame, finalDistance, finalSpeed, progDuration
+    fail = datas[8]
+    return frame, finalDistance, finalSpeed, progDuration, fail
 
 def splitData(data):
     list = (data.decode()).split(',')
     data = int(list[len(list)-1])
     return data
+
+def recvTextFrame():
+    while True:
+        recvVarFrame(pipeline1, True)

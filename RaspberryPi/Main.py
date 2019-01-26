@@ -24,7 +24,7 @@ r = cn.getConnection()"""
 #Drive.start()
 
 def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
-    data = [finalDistance, finalSpeed, programDuration]
+    data = [finalDistance, finalSpeed, programDuration, failure]
     cn.sendFinals(finalFrame, data)
 
 while True:
@@ -44,12 +44,12 @@ while True:
     cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
     recievedSpeed = cn.getSpeed()
     if recievedSpeed == 'FL':
-        finish(frame, distance, speed, (time.time()-startProgram), True)
+        finish(frame, distance, speed, (time.time()-startProgram), "1")
         #dc.setSpeed(0)
         #dc.setDirection(3)
         break
     elif recievedSpeed == 'SS':
-        finish(frame, distance, speed, (time.time()-startProgram), False)
+        finish(frame, distance, speed, (time.time()-startProgram), "0")
         break
     """elif recievedSpeed != speed:
         dc.setSpeed(speed)

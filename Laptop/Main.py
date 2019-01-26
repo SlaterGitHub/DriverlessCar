@@ -9,7 +9,7 @@ key = None
 
 pipeline3, pipeline2, pipeline1 = cn.getConnection()
 
-recvSign = Thread(target = cn.recvVarFrame, args = (pipeline1, True))
+recvSign = Thread(target = cn.recvTextFrame)
 #Always look for a speed sign being sent from the raspberry pi
 recvSign.start()
 #cn.setConnection()
@@ -28,10 +28,11 @@ while True:
 
 time.sleep(0.4)
 
-finalFrame, finalDistance, finalSpeed, progDuration = cn.recvFinals()
+finalFrame, finalDistance, finalSpeed, progDuration, fail = cn.recvFinals()
 print(finalDistance)
 print(finalSpeed)
 print(progDuration)
+print(fail)
 """ UPLOAD TO DATABASE """
 
 cv2.destroyAllWindows()
