@@ -16,16 +16,23 @@ recvSign.start()
 
 while True:
     frame = cn.recvVarFrame(pipeline3, False)
-
     cv2.imshow("frame", frame)
 
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):
-        cn.sendData("FL", pipeline2)
+        cn.sendData("FL")
         break
     elif key == ord('e'):
-        cn.sendData("SS", pipeline2)
+        cn.sendData("SS")
         break
+
+time.sleep(0.4)
+
+finalFrame, finalDistance, finalSpeed, progDuration = cn.recvFinals()
+print(finalDistance)
+print(finalSpeed)
+print(progDuration)
+""" UPLOAD TO DATABASE """
 
 cv2.destroyAllWindows()
 cn.close()

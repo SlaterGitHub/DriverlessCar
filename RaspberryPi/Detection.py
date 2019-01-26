@@ -8,9 +8,11 @@ StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
 #boundries = [([230, 230, 230], [255, 255, 255])]
 #For red hair
-boundries = [([0, 0, 150], [200, 200, 255])]
+boundries = [([100, 100, 150], [200, 200, 255])]
+averageX = None
 
 def getPath(frame, grey):
+    global averageX
     for (lower, upper) in boundries:
         lower = np.array(lower, dtype = "uint8")
         upper = np.array(upper, dtype = "uint8")
@@ -74,10 +76,7 @@ def getPath(frame, grey):
         frame[200:210, 0:320] = output
         #replace the pixels of the section in frame with the processed ones
 
-        try:
-            return frame, averageX
-        except:
-            return None, None
+        return frame, averageX
 
 def getSign(frame, Casc):
     for (x, y, w, h) in Casc:

@@ -1,6 +1,7 @@
 import socket
 import numpy
 import lz4.frame
+import time
 socketNum = 5001
 ip = "localhost"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,22 +45,19 @@ def getSpeed():
         return speed
     data = data.decode()
     if data != '':
-        if data == 'NA':
+        if data == 'FL' or 'SS':
             return data
         speed = int(data)
         return speed
     return speed
 
 def sendData(frame, c):
-    reso = str(frame.shape[1])
+    reso = frame.shape[1]
     datas = prepData(frame)
-    size = str(len(datas))
-    for x in range(6-len(size)):
-        size = "," + size
-    for x in range(3-len(reso)):
-        reso = "," + reso
+    size = len(datas)
+    size = constVarLength(6, size)
+    reso = constVarLength(3, reso)
     c.sendall(size+reso+datas)
-    #print("Raspberry" + str(size))
     return
     #Convert to a string form and send the entire frame
 
@@ -74,11 +72,19 @@ def sendFrame(frame):
 
 def sendFinals(finalFrame, data):
     sendFrame(finalFrame)
-    time.sleep(1)
-    for x in range(3):
-        fullFrame.sendall(str(data[x]))
+    data[2] = int(data[2])
+    data[0] = constVarLength(3, data[0])
+    data[1] = constVarLength(2, data[1])
+    data[2] = constVarLength(3, data[2])
+    fullFrame.sendall(data[0] + data[1] + data[2])
     time.sleep(1)
     endConnection()
+
+def constVarLength(length, var):
+    var = str(var)
+    for x in range(length-len(var)):
+        var = "," + var
+    return var
 
 def endConnection():
     speedFrame.close()

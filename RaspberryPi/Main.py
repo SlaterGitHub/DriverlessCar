@@ -10,8 +10,9 @@ import Detection as detect
 import Direction as dr
 
 startProgram = time.time()
-speed = 0.02
+speed = 50
 direction = 3
+distance = 50
 c = cn.getConnection()
 """time.sleep(1)
 r = cn.getConnection()"""
@@ -49,6 +50,7 @@ while True:
         break
     elif recievedSpeed == 'SS':
         finish(frame, distance, speed, (time.time()-startProgram), False)
+        break
     """elif recievedSpeed != speed:
         dc.setSpeed(speed)
 
@@ -61,6 +63,7 @@ while True:
         speed = 0
 
     #dc.setDirection(direction)
+
     if frame is not None:
         cn.sendFrame(frame)
 

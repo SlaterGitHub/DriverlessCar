@@ -53,10 +53,8 @@ def recvVarFrame(pipeline, speedSign):
         size = None
         resolution = None
     if (size != None or '') and (resolution != None or ''):
-        list = (size.decode()).split(',')
-        size = int(list[len(list)-1])
-        list = (resolution.decode()).split(',')
-        resolution = int(list[len(list)-1])
+        size = splitData(size)
+        resolution = splitData(resolution)
         data = recvall(size, pipeline)
         #If data is found then run the recvieve all function
         if data != None or '':
@@ -84,3 +82,23 @@ def reform(data, channels, x, y):
 def sendData(text):
     data = str(text)
     pipeline2.sendall(data)
+
+def recvFinals():
+    frame = None
+    recieved = False
+    while (recieved == False):
+        if not frame:
+            frame = recvVarFrame(pipeline3, False)
+            datas = recvall(8, pipeline3)
+            if (frame is not None) and (datas != None or ''):
+                recieved = True
+    print(datas)
+    finalDistance = splitData(datas[:3])
+    finalSpeed = splitData(datas[3:5])
+    progDuration = splitData(datas[5:8])
+    return frame, finalDistance, finalSpeed, progDuration
+
+def splitData(data):
+    list = (data.decode()).split(',')
+    data = int(list[len(list)-1])
+    return data
