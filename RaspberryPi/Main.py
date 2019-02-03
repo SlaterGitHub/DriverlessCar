@@ -29,7 +29,7 @@ def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
 
 while True:
     frame = cam.getFrame()
-    cv2.waitKey(1)
+    #cv2.waitKey(1)
     stopSigns, speedSigns, grey = detect.setCascFilter(frame)
     frame, averageX = detect.getPath(frame, grey)
     frame = detect.getSign(frame, speedSigns)
@@ -53,9 +53,9 @@ while True:
         dc.setSpeed(0)
         dc.setDirection(3)
         break
-    elif recievedSpeed != speed:
+    elif (recievedSpeed != speed) or (recievedSpeed < 101):
         if recievedSpeed != None:
-            #print(recievedSpeed)
+            print(recievedSpeed)
             speed = recievedSpeed
             dc.setSpeed(speed)
 
