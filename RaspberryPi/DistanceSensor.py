@@ -11,6 +11,8 @@ GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 #set pin 24 to be an input pin
 
+distance = 50
+
 def findDistance():
     GPIO.output(GPIO_TRIGGER, True)
     #output voltage

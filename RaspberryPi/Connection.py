@@ -3,7 +3,7 @@ import numpy
 import lz4.frame
 import time
 socketNum = 5001
-ip = "localhost"
+ip = "192.168.0.31"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,7 +14,7 @@ data = None
 
 def getConnection():
     global speedFrame, speedText, fullFrame
-    pipeline1.bind(("localhost", (socketNum)))
+    pipeline1.bind((ip, (socketNum)))
     #Create a server side socket
     pipeline1.listen(10)
     print("binded")
@@ -22,11 +22,11 @@ def getConnection():
     speedFrame, addr = pipeline1.accept()
     #set socket to c when recieving side connects
 
-    pipeline2.bind(("localhost", socketNum+100))
+    pipeline2.bind((ip, socketNum+100))
     pipeline2.listen(10)
     speedText, addr = pipeline2.accept()
 
-    pipeline3.bind(("localhost", socketNum+200))
+    pipeline3.bind((ip, socketNum+200))
     pipeline3.listen(10)
     fullFrame, addr = pipeline3.accept()
     speedText.settimeout(0.02)
@@ -75,6 +75,7 @@ def sendFinals(finalFrame, data):
     data[0] = constVarLength(3, data[0])
     data[1] = constVarLength(2, data[1])
     data[2] = constVarLength(3, data[2])
+    data[3] = data[3].encode()
     fullFrame.sendall(data[0] + data[1] + data[2] + data[3])
     time.sleep(1)
     endConnection()
@@ -82,8 +83,8 @@ def sendFinals(finalFrame, data):
 def constVarLength(length, var):
     var = str(var)
     for x in range(length-len(var)):
-        var = "," + var
-    return var
+        var = ',' + var
+    return var.encode()
 
 def endConnection():
     speedFrame.close()

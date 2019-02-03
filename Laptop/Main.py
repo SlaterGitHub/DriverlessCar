@@ -17,7 +17,8 @@ recvSign.start()
 
 while True:
     frame = cn.recvVarFrame(pipeline3, False)
-    cv2.imshow("frame", frame)
+    if frame is not None:
+        cv2.imshow("frame", frame)
 
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):

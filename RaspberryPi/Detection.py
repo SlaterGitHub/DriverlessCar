@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = 'C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\stopsign_classifier.xml'
-SpeedPth = "C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\Speedlimit_HAAR_ 13Stages.xml"
+StopPth = 'stopsign_classifier.xml'
+SpeedPth = "Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
 #boundries = [([230, 230, 230], [255, 255, 255])]
@@ -55,7 +55,7 @@ def getPath(frame, grey):
                     x[i], y[i] = centers[i]
                     #get the x and y value of the center of the biggest contour
                     if i == 1:
-                        averageX = (x[0]+x[1])/2
+                        averageX = int((x[0]+x[1])/2)
                         #calculate the average x value of the 2 biggest contours
                 except ValueError:
                     print("Value Error")

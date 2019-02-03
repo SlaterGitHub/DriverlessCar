@@ -18,26 +18,26 @@ for x in range(4):
     wheel[x].start(0)
 
 def forward(velocity):
-    wheel[0].changeDutyCycle(velocity)
-    wheel[1].changeDutyCycle(0)
-    wheel[2].changeDutyCycle(0)
-    wheel[3].changeDutyCycle(velocity)
+    wheel[0].ChangeDutyCycle(velocity)
+    wheel[1].ChangeDutyCycle(0)
+    wheel[2].ChangeDutyCycle(0)
+    wheel[3].ChangeDutyCycle(velocity)
 
 def left(velocity):
-    wheel[0].changeDutyCycle(velocity)
-    wheel[1].changeDutyCycle(0)
-    wheel[2].changeDutyCycle(velocity)
-    wheel[3].changeDutyCycle(0)
+    wheel[0].ChangeDutyCycle(velocity)
+    wheel[1].ChangeDutyCycle(0)
+    wheel[2].ChangeDutyCycle(velocity)
+    wheel[3].ChangeDutyCycle(0)
 
 def right(velocity):
-    wheel[0].changeDutyCycle(0)
-    wheel[1].changeDutyCycle(velocity)
-    wheel[2].changeDutyCycle(0)
-    wheel[3].changeDutyCycle(velocity)
+    wheel[0].ChangeDutyCycle(0)
+    wheel[1].ChangeDutyCycle(velocity)
+    wheel[2].ChangeDutyCycle(0)
+    wheel[3].ChangeDutyCycle(velocity)
 
 def stop(velocity):
     for x in range(4):
-        wheel[x].changeDutyCycle(velocity)
+        wheel[x].ChangeDutyCycle(velocity)
 """When a function runs it changes the voltage given to each motor to get the direction
 needed and turns the motor off and on at a high frequancy to make the car move
 different speeds"""
@@ -51,11 +51,10 @@ def accelerate(finalSpeed):
         time.sleep(timeInterval)
     return
 
-def setDirection():
+def setMovement():
     while True:
         global path
         global velocity
-        print(path)
         if path == 0:
             forward(freq)
         elif path == 1:

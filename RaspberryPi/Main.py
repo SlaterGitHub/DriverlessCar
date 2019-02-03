@@ -4,8 +4,8 @@ import Camera as cam
 import time
 import sys
 import cv2
-#import DistanceSensor as dist
-#import DriveCar as dc
+import DistanceSensor as dist
+import DriveCar as dc
 import Detection as detect
 import Direction as dr
 
@@ -18,10 +18,10 @@ c = cn.getConnection()
 r = cn.getConnection()"""
 #recvSpeed = Thread(target = cn.recvData)
 #recvSpeed.start()
-#Thread(target = dist.findDistance)
+Thread(target = dist.findDistance)
 
-#Drive = Thread(target = dc.setDirection)
-#Drive.start()
+Drive = Thread(target = dc.setMovement)
+Drive.start()
 
 def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
     data = [finalDistance, finalSpeed, programDuration, failure]
@@ -45,27 +45,29 @@ while True:
     recievedSpeed = cn.getSpeed()
     if recievedSpeed == 'FL':
         finish(frame, distance, speed, (time.time()-startProgram), "1")
-        #dc.setSpeed(0)
-        #dc.setDirection(3)
+        dc.setSpeed(0)
+        dc.setDirection(3)
         break
     elif recievedSpeed == 'SS':
         finish(frame, distance, speed, (time.time()-startProgram), "0")
+        dc.setSpeed(0)
+        dc.setDirection(3)
         break
     elif recievedSpeed != speed:
         if recievedSpeed != None:
-            print(recievedSpeed)
+            #print(recievedSpeed)
             speed = recievedSpeed
-            #dc.setSpeed(speed)
+            dc.setSpeed(speed)
 
-    #distance = dist.getDistance()
+    distance = dist.getDistance()
 
-    """if distance < 10:
+    if distance < 10:
         speed = 0
-        """
+        
     for (x, y, w, h) in  stopSigns:
         speed = 0
 
-    #dc.setDirection(direction)
+    dc.setDirection(direction)
 
     if frame is not None:
         cn.sendFrame(frame)

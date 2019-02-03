@@ -4,7 +4,7 @@ import lz4.frame
 import Detection as dt
 import time
 socketNum = 5001
-ip = "localhost"
+ip = "192.168.0.31"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
