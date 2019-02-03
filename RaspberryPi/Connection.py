@@ -29,7 +29,7 @@ def getConnection():
     pipeline3.bind(("localhost", socketNum+200))
     pipeline3.listen(10)
     fullFrame, addr = pipeline3.accept()
-    speedText.setblocking(0)
+    speedText.settimeout(0.02)
     speedFrame.settimeout(0.2)
     #fullFrame and speedFrame are output pipelines
     #speedText is an input pipeline

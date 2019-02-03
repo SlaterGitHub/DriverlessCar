@@ -3,6 +3,7 @@ import Detection as detect
 import Connection2 as cn
 from threading import Thread
 import time
+import sys
 
 speed = "50"
 key = None
@@ -37,3 +38,4 @@ print(fail)
 
 cv2.destroyAllWindows()
 cn.close()
+sys.exit()

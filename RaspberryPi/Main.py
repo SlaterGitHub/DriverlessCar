@@ -53,6 +53,7 @@ while True:
         break
     elif recievedSpeed != speed:
         if recievedSpeed != None:
+            print(recievedSpeed)
             speed = recievedSpeed
             #dc.setSpeed(speed)
 
@@ -70,6 +71,6 @@ while True:
         cn.sendFrame(frame)
 
 
-time.sleep(2)
+time.sleep(0.5)
 cn.endConnection()
 sys.exit()

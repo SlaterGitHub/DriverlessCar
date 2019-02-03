@@ -24,8 +24,9 @@ def getText(grey):
 
 def speedCheck(text):
     text = re.search(r'\d+', text)
-    if text != None:
+    if text != None or '':
         return text.group()
+    return ''
 
 """def setTextFilter(grey):
     grey = cv2.medianBlur(grey, 3)
