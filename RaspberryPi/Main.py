@@ -23,9 +23,23 @@ Thread(target = dist.findDistance)
 Drive = Thread(target = dc.setMovement)
 Drive.start()
 
+frame = None
+
 def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
+    sndfrm.join()
     data = [finalDistance, finalSpeed, programDuration, failure]
     cn.sendFinals(finalFrame, data)
+
+def sendFrame():
+    global frame
+    currFrame = None
+    while True:
+        if (frame != currFrame) and (frame is not None):
+            currFrame = frame
+            cn.sendFrame(frame)
+
+sndfrm = Thread(target = sendFrame)
+sndfrm.start()
 
 while True:
     frame = cam.getFrame()
@@ -63,7 +77,7 @@ while True:
 
     if distance < 10:
         speed = 0
-        
+
     for (x, y, w, h) in  stopSigns:
         speed = 0
 
