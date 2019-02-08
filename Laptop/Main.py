@@ -39,4 +39,5 @@ print(fail)
 
 cv2.destroyAllWindows()
 cn.close()
+recvSign.join()
 sys.exit()

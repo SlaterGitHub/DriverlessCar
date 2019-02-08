@@ -12,6 +12,7 @@ path = 3
 freq = 50
 velocity = 50
 currVelocity = velocity
+acc = None
 #set starting speed and direction to stop
 
 wheel = [gpio.PWM(7, freq), gpio.PWM(11, freq), gpio.PWM(13, freq), gpio.PWM(15, freq)]
@@ -45,10 +46,14 @@ different speeds"""
 
 def accelerate(finalSpeed):
     global velocity, currVelocity
-    changeInSpeed = finalSpeed - currVelocity
-    timeInterval = 1/changeInSpeed
-    for x in range(changeInSpeed):
-        currVelocity += x
+    changeInSpeed = int(finalSpeed - currVelocity)
+    timeInterval = abs(1/changeInSpeed)
+    print("time" + str(timeInterval))
+    print("change" + str(changeInSpeed))
+    interval = changeInSpeed / abs(changeInSpeed)
+    for x in range(abs(changeInSpeed)):
+        print("curr vel" + str(currVelocity))
+        currVelocity += interval
         time.sleep(timeInterval)
     return
 
@@ -56,7 +61,6 @@ def setMovement():
     while True:
         global path
         global currVelocity
-        print(currVelocity)
         if path == 0:
             forward(currVelocity)
         elif path == 1:
@@ -73,8 +77,13 @@ def setDirection(direction):
 
 def setSpeed(speed):
     global velocity
-    if (speed != None):
+    global acc
+    if (speed is not None):
         speed = int(speed)
-        if (speed != velocity / 2):
-            velocity = 2 * speed
-            Thread(target = accelerate, args = [velocity]).start()
+        if (speed is not velocity):
+            if acc is not None:
+                acc.join()
+            velocity = speed
+            print(velocity)
+            acc = Thread(target = accelerate, args = [velocity])
+            acc.start()

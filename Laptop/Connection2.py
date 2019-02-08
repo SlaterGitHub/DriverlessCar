@@ -4,7 +4,7 @@ import lz4.frame
 import Detection as dt
 import time
 socketNum = 5001
-ip = "192.168.0.31"
+ip = "192.168.0.32"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -78,10 +78,13 @@ def recvVarFrame(pipeline, speedSign):
         return size, resolution"""
 
 def reform(data, channels, x, y):
-    data = lz4.frame.decompress(data)
-    data = np.fromstring(data, dtype = "uint8")
-    frame = data.reshape((y, x, channels))
-    return frame
+    try:
+        data = lz4.frame.decompress(data)
+        data = np.fromstring(data, dtype = "uint8")
+        frame = data.reshape((y, x, channels))
+        return frame
+    except:
+        return None
 
 def sendData(text):
     data = str(text)
@@ -91,7 +94,7 @@ def recvFinals():
     frame = None
     recieved = False
     while (recieved == False):
-        if not frame:
+        if frame is None:
             frame = recvVarFrame(pipeline3, False)
             datas = recvall(9, pipeline3)
             if (frame is not None) and (datas != None or ''):

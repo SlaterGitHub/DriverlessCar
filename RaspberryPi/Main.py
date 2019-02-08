@@ -18,28 +18,24 @@ c = cn.getConnection()
 r = cn.getConnection()"""
 #recvSpeed = Thread(target = cn.recvData)
 #recvSpeed.start()
-Thread(target = dist.findDistance)
+Thread(target = dist.findDistance).start()
 
 Drive = Thread(target = dc.setMovement)
 Drive.start()
 
 frame = None
+sendfrm = Thread()
 
 def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
-    sndfrm.join()
     data = [finalDistance, finalSpeed, programDuration, failure]
     cn.sendFinals(finalFrame, data)
 
-def sendFrame():
-    global frame
-    currFrame = None
-    while True:
-        if (frame != currFrame) and (frame is not None):
-            currFrame = frame
-            cn.sendFrame(frame)
+def sendFrame(frame):
+    cn.sendFrame(frame)
+    return
 
-sndfrm = Thread(target = sendFrame)
-sndfrm.start()
+#sndfrm = Thread(target = sendFrame, args = (frame))
+#sndfrm.start()
 
 while True:
     frame = cam.getFrame()
@@ -56,7 +52,8 @@ while True:
         cv2.circle(frame, (averageX, 205), 3, (0, 255, 255), -1)
 
     cv2.rectangle(frame, (0, 200), (320, 210), (0,255,0), 3)
-    recievedSpeed = cn.getSpeed()
+    recievedSpeed = cn.getSpeed()#
+
     if recievedSpeed == 'FL':
         finish(frame, distance, speed, (time.time()-startProgram), "1")
         dc.setSpeed(0)
@@ -67,9 +64,8 @@ while True:
         dc.setSpeed(0)
         dc.setDirection(3)
         break
-    elif (recievedSpeed != speed) or (recievedSpeed < 101):
-        if recievedSpeed != None:
-            print(recievedSpeed)
+    elif (recievedSpeed != speed) and (recievedSpeed != None):
+        if int(recievedSpeed) < 101:
             speed = recievedSpeed
             dc.setSpeed(speed)
 
@@ -84,9 +80,12 @@ while True:
     dc.setDirection(direction)
 
     if frame is not None:
-        cn.sendFrame(frame)
+        if not sendfrm.isAlive():
+            sendfrm = Thread(target = sendFrame, args = (frame,))
+            sendfrm.start()
+        
 
 
-time.sleep(0.5)
+time.sleep(1)
 cn.endConnection()
 sys.exit()
