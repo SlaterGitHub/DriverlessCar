@@ -1,11 +1,12 @@
-import RPi.GPIO as gpio
+#import RPi.GPIO as gpio
 import time
 from threading import Thread
+"""
 gpio.setmode(gpio.BOARD)
 gpio.setup(7, gpio.OUT)
 gpio.setup(11, gpio.OUT)
 gpio.setup(13, gpio.OUT)
-gpio.setup(15, gpio.OUT)
+gpio.setup(15, gpio.OUT)"""
 #create gpio and set pins to be output mode
 
 path = 3
@@ -15,9 +16,10 @@ currVelocity = velocity
 acc = None
 #set starting speed and direction to stop
 
+"""
 wheel = [gpio.PWM(7, freq), gpio.PWM(11, freq), gpio.PWM(13, freq), gpio.PWM(15, freq)]
 for x in range(4):
-    wheel[x].start(0)
+    wheel[x].start(0)"""
 
 def forward(velocity):
     wheel[0].ChangeDutyCycle(currVelocity)
@@ -47,28 +49,39 @@ different speeds"""
 def accelerate(finalSpeed):
     global velocity, currVelocity
     changeInSpeed = int(finalSpeed - currVelocity)
-    timeInterval = abs(1/changeInSpeed)
+    timeInterval = abs(5.0/float(changeInSpeed))
     print("time" + str(timeInterval))
     print("change" + str(changeInSpeed))
     interval = changeInSpeed / abs(changeInSpeed)
     for x in range(abs(changeInSpeed)):
-        print("curr vel" + str(currVelocity))
         currVelocity += interval
+        print("------------------------------------")
+        print("curr vel" + str(currVelocity))
+        print("------------------------------------")
         time.sleep(timeInterval)
     return
 
 def setMovement():
     while True:
+        time.sleep(1)
         global path
         global currVelocity
         if path == 0:
-            forward(currVelocity)
+            print("forward")
+            #forward(currVelocity)
         elif path == 1:
-            left(currVelocity)
+            print("left")
+            #left(currVelocity)
         elif path == 2:
-            right(currVelocity)
+            print("right")
+            #right(currVelocity)
         elif path == 3:
-            stop(currVelocity)
+            print("stop")
+            #stop(currVelocity)
+        elif path == 4:
+            stop(0)
+            print("stopping")
+            break
     """Depending on the value of path, 1 of 4 functions are run and passed the speed"""
 
 def setDirection(direction):
@@ -87,3 +100,4 @@ def setSpeed(speed):
             print(velocity)
             acc = Thread(target = accelerate, args = [velocity])
             acc.start()
+            """if the speed is not the same as the current speed a thread is made to accelerate the car to the target speed"""

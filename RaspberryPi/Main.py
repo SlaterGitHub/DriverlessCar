@@ -4,7 +4,7 @@ import Camera as cam
 import time
 import sys
 import cv2
-import DistanceSensor as dist
+#import DistanceSensor as dist
 import DriveCar as dc
 import Detection as detect
 import Direction as dr
@@ -18,7 +18,7 @@ c = cn.getConnection()
 r = cn.getConnection()"""
 #recvSpeed = Thread(target = cn.recvData)
 #recvSpeed.start()
-Thread(target = dist.findDistance).start()
+#Thread(target = dist.findDistance).start()
 
 Drive = Thread(target = dc.setMovement)
 Drive.start()
@@ -56,20 +56,18 @@ while True:
 
     if recievedSpeed == 'FL':
         finish(frame, distance, speed, (time.time()-startProgram), "1")
-        dc.setSpeed(0)
-        dc.setDirection(3)
+        dc.setDirection(4)
         break
     elif recievedSpeed == 'SS':
         finish(frame, distance, speed, (time.time()-startProgram), "0")
-        dc.setSpeed(0)
-        dc.setDirection(3)
+        dc.setDirection(4)
         break
-    elif (recievedSpeed != speed) and (recievedSpeed != None):
+    elif (recievedSpeed != speed) and (recievedSpeed != None) and (recievedSpeed != (speed/10)):
         if int(recievedSpeed) < 101:
             speed = recievedSpeed
             dc.setSpeed(speed)
 
-    distance = dist.getDistance()
+    #distance = dist.getDistance()
 
     if distance < 10:
         speed = 0
@@ -83,8 +81,16 @@ while True:
         if not sendfrm.isAlive():
             sendfrm = Thread(target = sendFrame, args = (frame,))
             sendfrm.start()
-        
 
+    """print("------------------------------------")
+    print(speed)
+    print("------------------------------------")
+    print(direction)"""
+
+
+
+
+sendfrm.join()
 
 time.sleep(1)
 cn.endConnection()

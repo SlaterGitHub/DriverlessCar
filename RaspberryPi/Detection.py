@@ -2,17 +2,18 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = 'stopsign_classifier.xml'
-SpeedPth = "Speedlimit_HAAR_ 13Stages.xml"
+StopPth = 'C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\stopsign_classifier.xml'
+SpeedPth = "C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
-#boundries = [([230, 230, 230], [255, 255, 255])]
+boundries = [([0, 0, 50], [100, 100, 255])]
 #For red hair
-boundries = [([100, 100, 150], [200, 200, 255])]
+#boundries = [([150, 150, 100], [250, 250, 255])]
 averageX = None
 
 def getPath(frame, grey):
     global averageX
+    global boundries
     for (lower, upper) in boundries:
         lower = np.array(lower, dtype = "uint8")
         upper = np.array(upper, dtype = "uint8")
@@ -30,12 +31,15 @@ def getPath(frame, grey):
         contours = cv2.findContours(mask2.copy(),
                                     cv2.RETR_EXTERNAL,
                                     cv2.CHAIN_APPROX_SIMPLE)
-        contours = contours[0] if imutils.is_cv2() else contours[1]
+        contours = contours[1] if imutils.is_cv2() else contours[0]
         #make an array of each block of colour, this is pixels that are touching
         centers = []
         x = [None]*2
         y = [None]*2
-        length = len(contours)
+        if contours is not None:
+            length = len(contours[1])
+        else:
+            length = 0
         #make an empty x and y array of size 2 and find the length of the list contours
 
         if length > 1:
@@ -58,7 +62,6 @@ def getPath(frame, grey):
                         averageX = int((x[0]+x[1])/2)
                         #calculate the average x value of the 2 biggest contours
                 except ValueError:
-                    print("Value Error")
                     averageX = None
 
         inBound = cv2.bitwise_or(TrimFrame, TrimFrame, mask = mask2)
@@ -81,10 +84,12 @@ def getPath(frame, grey):
 def getSign(frame, Casc):
     for (x, y, w, h) in Casc:
         cv2.rectangle(frame, (x, y), (x+y, y+h), (0, 255, 0), 3)
+    #use the location data of any signs and draw them on the frame in a rectangle
     return frame
 
 def setCascFilter(frame):
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    #convert the image to greyscale
     stopSigns = StopCas.detectMultiScale(
     grey,
     scaleFactor=1.1,
@@ -92,6 +97,7 @@ def setCascFilter(frame):
     minSize=(60, 75),
     flags=cv2.CASCADE_SCALE_IMAGE
     )
+    #define the rules for the cascde classifier, the sensitivity, minimum resolution and classifier type
     speedSigns = SpeedCas.detectMultiScale(
         grey,
         scaleFactor=1.1,
@@ -99,4 +105,6 @@ def setCascFilter(frame):
         minSize=(50, 50),
         flags=cv2.CASCADE_SCALE_IMAGE
         )
+    #define the rules for the cascde classifier, the sensitivity, minimum resolution and classifier type
     return stopSigns, speedSigns, grey
+    #return the location of any found signs and the grey frame for further use
