@@ -119,3 +119,9 @@ def splitData(data):
 def recvTextFrame():
     while True:
         recvVarFrame(pipeline1, True)
+
+def deform(frame):
+    frame = frame.flatten()
+    frame = frame.tostring()
+    frame = lz4.frame.compress(frame)
+    return frame
