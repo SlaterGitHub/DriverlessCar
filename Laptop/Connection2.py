@@ -4,7 +4,7 @@ import lz4.frame
 import Detection as dt
 import time
 socketNum = 5001
-ip = "localhost"
+ip = "192.168.0.32"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,7 +28,12 @@ def getConnection():
     return pipeline3, pipeline2, pipeline1
 
 def close():
+    pipeline1.setblocking(0)
+    pipeline2.setblocking(0)
+    pipeline3.setblocking(0)
     pipeline1.close()
+    pipeline2.close()
+    pipeline3.close()
     # Ends connection with server
 
 def recvall(dataSize, pipeline):

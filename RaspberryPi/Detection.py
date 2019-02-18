@@ -2,11 +2,11 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = 'C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\stopsign_classifier.xml'
-SpeedPth = "C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\Speedlimit_HAAR_ 13Stages.xml"
+StopPth = 'stopsign_classifier.xml'
+SpeedPth = "Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
-boundries = [([0, 0, 50], [100, 100, 255])]
+boundries = [([25, 25, 150], [100, 100, 255])]
 #For red hair
 #boundries = [([150, 150, 100], [250, 250, 255])]
 averageX = None
@@ -31,13 +31,13 @@ def getPath(frame, grey):
         contours = cv2.findContours(mask2.copy(),
                                     cv2.RETR_EXTERNAL,
                                     cv2.CHAIN_APPROX_SIMPLE)
-        contours = contours[1] if imutils.is_cv2() else contours[0]
+        contours = contours[0] if imutils.is_cv2() else contours[1]
         #make an array of each block of colour, this is pixels that are touching
         centers = []
         x = [None]*2
         y = [None]*2
         if contours is not None:
-            length = len(contours[1])
+            length = len(contours)
         else:
             length = 0
         #make an empty x and y array of size 2 and find the length of the list contours
@@ -63,6 +63,8 @@ def getPath(frame, grey):
                         #calculate the average x value of the 2 biggest contours
                 except ValueError:
                     averageX = None
+        else:
+            averageX = None
 
         inBound = cv2.bitwise_or(TrimFrame, TrimFrame, mask = mask2)
         #find the pixels that are inbound to the boudries

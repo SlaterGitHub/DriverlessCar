@@ -28,7 +28,7 @@ while True:
         cn.sendData("SS")
         break
 
-time.sleep(0.4)
+time.sleep(0.1)
 
 finalFrame, finalDistance, finalSpeed, progDuration, fail = cn.recvFinals()
 print(finalDistance)
@@ -39,5 +39,5 @@ print(fail)
 
 cv2.destroyAllWindows()
 cn.close()
-recvSign.join()
+#recvSign.join()
 sys.exit()

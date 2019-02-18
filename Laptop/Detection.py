@@ -5,6 +5,7 @@ import numpy as np
 import imutils
 from PIL import Image
 import re
+from time import sleep
 
 def getText(grey):
     filename = "{}.png".format(os.getpid())

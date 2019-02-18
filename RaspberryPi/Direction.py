@@ -1,12 +1,12 @@
 def getDirection(averageX):
+    
+    if averageX is None:
+        return 3
     centered = averageX - 160
 
     if abs(centered) <= 60:
-        direction = 0
+        return 0
     elif centered < -60:
-        direction = 1
+        return 1
     elif centered > 60:
-        direction = 2
-    else:
-        direction = 3
-    return direction
+        return 2
