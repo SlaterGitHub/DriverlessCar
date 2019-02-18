@@ -1,5 +1,5 @@
 import MySQLdb
-from Connection2 import deform
+from Connection2 import deform, reform
 
 host = "dbrysl.ccwooq5jrcka.eu-west-2.rds.amazonaws.com"
 user = "rysl"
@@ -17,6 +17,7 @@ def getAll():
     entries = []
     cur.execute("SELECT * FROM Drives")
     for (x) in cur:
+        x[4] = reform(x[4], 3, 320, 240)
         entries.append(x)
     return entires
 
