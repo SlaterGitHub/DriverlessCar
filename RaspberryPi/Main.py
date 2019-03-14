@@ -4,7 +4,7 @@ import Camera as cam
 import time
 import sys
 import cv2
-import DistanceSensor as dist
+#import DistanceSensor as dist
 import DriveCar as dc
 import Detection as detect
 import Direction as dr
@@ -20,14 +20,15 @@ c = cn.getConnection()
 r = cn.getConnection()"""
 #recvSpeed = Thread(target = cn.recvData)
 #recvSpeed.start()
-distThread = Thread(target = dist.findDistance)
-distThread.start()
+#distThread = Thread(target = dist.findDistance)
+#distThread.start()
 
 Drive = Thread(target = dc.setMovement)
 Drive.start()
 
 frame = None
 sendfrm = Thread()
+distance = 47
 
 def finish(finalFrame, finalDistance, finalSpeed, programDuration, failure):
     data = [finalDistance, finalSpeed, programDuration, failure]
@@ -41,9 +42,9 @@ def sendFrame(frame):
 #sndfrm.start()
 start = time.time()
 while True:
-    
+
     frame = cam.getFrame()
-    
+
     #cv2.waitKey(1)
     stopSigns, speedSigns, grey = detect.setCascFilter(frame)
     frame, averageX = detect.getPath(frame, grey)
@@ -75,21 +76,19 @@ while True:
         if (recievedSpeed != speed) and (int(recievedSpeed) < 101) and (recievedSpeed != (speed/10)):
             speed = recievedSpeed
 
-    distance = dist.getDistance()
+    #distance = dist.getDistance()
 
-    if distance < 10:
-        speed = 0
+    """if distance < 10:
+        speed = 0"""
 
     for (x, y, w, h) in  stopSigns:
         oldSpeed = speed
         speed = 0
 
-    print(speed)
-
     dc.setDirection(direction)
     dc.setSpeed(speed)
-    
-    speed = oldSpeed
+
+    #speed = oldSpeed
 
     if frame is not None:
         if not sendfrm.isAlive():
@@ -100,7 +99,6 @@ while True:
     print(speed)
     print("------------------------------------")
     print(direction)"""
-    print(time.time() - start)
     start = time.time()
 
 

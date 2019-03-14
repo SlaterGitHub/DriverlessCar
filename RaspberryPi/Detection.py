@@ -2,13 +2,13 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = 'stopsign_classifier.xml'
-SpeedPth = "Speedlimit_HAAR_ 13Stages.xml"
+StopPth = 'C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\stopsign_classifier.xml'
+SpeedPth = "C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
-boundries = [([25, 25, 150], [100, 100, 255])]
+#boundries = [([25, 25, 150], [100, 100, 255])]
 #For red hair
-#boundries = [([150, 150, 100], [250, 250, 255])]
+boundries = [([50, 30, 20], [100, 250, 150])]
 averageX = None
 
 def getPath(frame, grey):
@@ -31,7 +31,7 @@ def getPath(frame, grey):
         contours = cv2.findContours(mask2.copy(),
                                     cv2.RETR_EXTERNAL,
                                     cv2.CHAIN_APPROX_SIMPLE)
-        contours = contours[0] if imutils.is_cv2() else contours[1]
+        contours = contours[1] if imutils.is_cv2() else contours[0]
         #make an array of each block of colour, this is pixels that are touching
         centers = []
         x = [None]*2
