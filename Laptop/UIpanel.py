@@ -118,6 +118,7 @@ class UIpanel:
         self.loc = loc
         self.updating = None
         self.closed = [False, False]
+        self.databaseInfo = None
         self.buildPanel()
 
     def DB(self):

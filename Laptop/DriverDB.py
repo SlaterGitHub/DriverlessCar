@@ -14,12 +14,9 @@ db = MySQLdb.connect(host = host,
 cur = db.cursor()
 
 def getAll():
-    entries = []
     cur.execute("SELECT * FROM Drives")
-    for (x) in cur:
-        x[4] = reform(x[4], 3, 320, 240)
-        entries.append(x)
-    return entires
+    entries = getData(cur)
+    return entries
 
 def upload(runTime, lastDistance, lastSpeed, fail, frame):
     PK = int(cur.execute("SELECT carID FROM Drives"))
@@ -31,9 +28,15 @@ def upload(runTime, lastDistance, lastSpeed, fail, frame):
         db.rollback()
 
 def getFoS(fail):
-    entires = []
     cur.execute("SELECT * FROM Drives WHERE fail = %s", (int(fail)))
+    entries = getData(cur)
+    return entries
+
+def getData(cur):
+    entries = []
     for (x) in cur:
+        x = list(x)
         x[4] = reform(x[4], 3, 320, 240)
         entries.append(x)
-    return entires
+    print("done")
+    return entries
