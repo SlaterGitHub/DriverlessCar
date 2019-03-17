@@ -78,7 +78,7 @@ while True:
 
     #distance = dist.getDistance()
 
-    """if distance < 10:
+    """if distance < 10:while True:
         speed = 0"""
 
     for (x, y, w, h) in  stopSigns:
@@ -87,8 +87,7 @@ while True:
 
     dc.setDirection(direction)
     dc.setSpeed(speed)
-
-    #speed = oldSpeed
+    cn.sendStats(speed, distance)
 
     if frame is not None:
         if not sendfrm.isAlive():

@@ -4,7 +4,7 @@ import lz4.frame
 import Detection as dt
 import time
 socketNum = 5001
-ip = "192.168.43.77"
+ip = "localhost"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -19,7 +19,7 @@ def getConnection():
     pipeline2.connect((ip, socketNum + 100))
     #output
     pipeline3.connect((ip, socketNum + 200))
-    #input
+    #output
     #save socket as m once accepted by client
     pipeline1.settimeout(0.4)
     pipeline2.settimeout(0.4)
@@ -125,3 +125,16 @@ def deform(frame):
     frame = frame.tostring()
     frame = lz4.frame.compress(frame)
     return frame
+
+def recvStats(pipe):
+    try:
+        speed = pipe.recv(3)
+        distance = pipe.recv(3)
+    except:
+        return None, None
+    if speed is not None:
+        speed = splitData(speed)
+        distance = splitData(distance)
+        return speed, distance
+    else:
+        return None, None

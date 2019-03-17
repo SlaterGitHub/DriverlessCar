@@ -3,7 +3,7 @@ import numpy
 import lz4.frame
 import time
 socketNum = 5001
-ip = "192.168.43.77"
+ip = "localhost"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -90,3 +90,8 @@ def endConnection():
     speedFrame.close()
     speedText.close()
     fullFrame.close()
+
+def sendStats(speed, distance):
+    speed = constVarLength(3, speed)
+    distance = constVarLength(3, distance)
+    speedText.sendall(speed + distance)

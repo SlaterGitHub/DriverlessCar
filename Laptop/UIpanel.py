@@ -8,6 +8,9 @@ import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+import sys
+import time
+import DriverDB as db
 
 class UIpanel:
     def buildPanel(self):
@@ -20,7 +23,7 @@ class UIpanel:
                 self.panelContent.append(tk.Text(self.panel, width = self.x[l], height = self.y[l]))
             elif self.panelType[l] == "Button":
                 if self.content[l] == "Exit":
-                    command = self.panel.destroy
+                    command = self.Exit
                 elif self.content[l] == "Database":
                     command = self.DB
                 elif self.content[l] == "All Drives":
@@ -31,6 +34,10 @@ class UIpanel:
                     command = self.getSuccesses
                 elif self.content[l] == "Start":
                     command = self.Start
+                elif self.content[l] == "Success":
+                    command = lambda:self. endProgram(False)
+                elif self.content[l] == "Fail":
+                    command = lambda: self.endProgram(True)
                 self.panelContent.append(tk.Button(self.panel, text = self.content[l], command = command, width = self.x[l], height = self.y[l]))
             elif self.panelType[l] == "Plot":
                 self.fig = Figure(figsize=(self.x[l], self.y[l]))
@@ -78,19 +85,22 @@ class UIpanel:
         self.panel.graphPane.draw()
 
     def displayValues(self):
-        for l in range(len(self.content)):
-            if self.panelType[l] == "Frame":
-                self.updateFrame(l)
-            elif self.panelType[l] == "Text":
-                self.updateText(l)
-            elif self.panelType[l] == "Button":
-                self.panelType[l] = self.panelType[l]
-            elif self.panelType[l] == "Plot":
-                self.updatePlot(l)
-            else:
-                print("UI error, panelType not compatible")
-                return
-        self.panelContent[0].after(1000, self.displayValues)
+        if self.updating != 'drive' or 'database':
+            for l in range(len(self.content)):
+                if self.panelType[l] == "Frame":
+                    self.updateFrame(l)
+                elif self.panelType[l] == "Text":
+                    self.updateText(l)
+                elif self.panelType[l] == "Button":
+                    self.panelType[l] = self.panelType[l]
+                elif self.panelType[l] == "Plot":
+                    self.updatePlot(l)
+                else:
+                    print("UI error, panelType not compatible")
+                    return
+        else:
+            print("worked")
+        self.panel.after(20, self.displayValues)
 
 
     def showPanel(self):
@@ -106,25 +116,48 @@ class UIpanel:
         self.panel = tk.Tk()
         self.panel.geometry("1300x600")
         self.loc = loc
+        self.updating = None
+        self.closed = [False, False]
         self.buildPanel()
 
     def DB(self):
-        print("Hi")
-        DataBaseUI = UIpanel(x, y, content, panelType, loc)
-        DataBaseUI.showPanel()
-        self.panel.destroy()
+        self.closed = [True, True]
+        self.updating = 'database'
 
     def getAllDrives(self):
-        print("getalldrives")
+        self.databaseInfo = db.getAll()
 
     def getFails(self):
-        print("getfails")
+        self.databaseInfo = db.getFoS(1)
 
     def getSuccesses(self):
-        print("getsuccsesses")
+        self.databaseInfo = db.getFoS(0)
 
     def Start(self):
-        print("Start")
-        #self.changeUI()
+        self.updating = 'drive'
 
-    #def changeUI(self):
+    def Exit(self):
+        self.panel.destroy()
+        self.updating = 'end'
+
+    def update(self, xSize, ySize, content, panelType, loc):
+        for l in self.panel.winfo_children():
+            l.destroy()
+
+        self.background = tk.Label(self.panel, bg="gray")
+        self.background.place(x = 0, y = 0, width=1300, height=600)
+
+        self.x = xSize
+        self.y = ySize
+        self.content = content
+        self.panelType = panelType
+        self.panelContent = []
+        self.loc = loc
+        self.buildPanel()
+        self.updating = None
+
+    def isUpdating(self):
+        return self.updating
+
+    def endProgram(self, bool):
+        self.closed = [True, bool]
