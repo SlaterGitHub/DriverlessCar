@@ -2,7 +2,9 @@ import random as rdm
 import time
 #import libraris
 
-def getDigits(Digits, indx):
+def getDigits(data, lower, upper, indx, l):
+    Digits = [i[l] for i in data][lower:upper]
+    print(Digits)
     for l in range(indx):
         if (len(Digits) - 1) < l:
             break
@@ -10,45 +12,41 @@ def getDigits(Digits, indx):
 
         if l > 0:
             if Digits[l] < Digits[l-1]:
-                Digits.insert(l-1, Digits.pop(l))
+                tempHold = data[l]
+                data[l] = data[l-1]
+                data[l-1] = tempHold
+
         """when the loop has passed more than once if the value in index of
         digits is less than the value in the cell before, swap the values"""
-    return Digits
+    return data
 
-def mergeSort(array, indx, finalArray):
-    loop = len(array)/indx
+def mergeSort(data, indx, l):
+    loop = len([i[l] for i in data])/indx
     #Find how many times the array can be run before running out of cells
-    excess = len(array) % indx
+    excess = len([i[l] for i in data]) % indx
     #Find how many cells will be left in an excess
     for loop in range(loop):
         #runs loop times for every loop
-        tempArray = getDigits(array[(indx*loop):((indx*loop)+(indx))], indx)
-        for j in range(len(tempArray)):
-            finalArray.append(tempArray[j])
-
+        data = getDigits(data, (indx*loop), ((indx*loop)+(indx)), indx, l)
+        """for j in range(len(tempArray)):
+            finalArray.append(tempArray[j])"""
     if excess != 0:
-        mergeSort(array[((len(array))-excess):(len(array))], excess, finalArray)
+        mergeSort(data, excess, l)
     #run the excess values through mergeSort as their own array
 
-    return finalArray
+    return data
 
 def listSorted(array):
+    print(array)
     for m in range(len(array)-1):
         if array[m+1] < array[m]:
             return False
     return True
     #Check the array to make sure each value is in order from smallest to biggest
 
-size = 50
-Range = 1000
-numbers = [None]*size
-y = 2
-
-for x in range(size):
-    numbers[x] = rdm.randint(1, Range)
-
-while listSorted(numbers) == False:
-    numbers = mergeSort(numbers, y, [])
-    y += y
-
-print(numbers)
+def sort(data, l):
+    y = 2
+    while listSorted([i[l] for i in data]) == False:
+        data = mergeSort(data, y, l)
+        y += y
+    return data

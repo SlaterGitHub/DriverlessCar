@@ -11,6 +11,7 @@ from matplotlib.figure import Figure
 import sys
 import time
 import DriverDB as db
+import MergeSort as mg
 
 class UIpanel:
     def buildPanel(self):
@@ -38,6 +39,18 @@ class UIpanel:
                     command = lambda:self. endProgram(False)
                 elif self.content[l] == "Fail":
                     command = lambda: self.endProgram(True)
+                elif self.content[l] == "Last Frame":
+                    command = lambda button = l-10: self.showFrame(button)
+                elif self.content[l][:4] == "Sort":
+                    if self.content[l][5:] == "PK":
+                        sorting = 0
+                    elif self.content[l][5:] == "Time":
+                        sorting = 1
+                    elif self.content[l][5:] == "Distance":
+                        sorting = 2
+                    elif self.content[l][5:] == "Speed":
+                        sorting = 3
+                    command = lambda sortState =  sorting: self.sort(sortState)
                 self.panelContent.append(tk.Button(self.panel, text = self.content[l], command = command, width = self.x[l], height = self.y[l]))
             elif self.panelType[l] == "Plot":
                 self.fig = Figure(figsize=(self.x[l], self.y[l]))
@@ -81,7 +94,9 @@ class UIpanel:
         self.panelContent[l].configure(image=img)
 
     def updatePlot(self, l):
-        self.panel.axis.set_data(self.content[l][:2])
+        if self.content[l][0][len(self.content[l][0])-1] > 100:
+            self.ax.set_xlim(0, int(self.content[l][0][len(self.content[l][0])-1])+2)
+        self.panel.axis.set_data(np.array(self.content[l][0]), np.array(self.content[l][1]))
         self.panel.graphPane.draw()
 
     def displayValues(self):
@@ -98,8 +113,6 @@ class UIpanel:
                 else:
                     print("UI error, panelType not compatible")
                     return
-        else:
-            print("worked")
         self.panel.after(20, self.displayValues)
 
 
@@ -162,3 +175,14 @@ class UIpanel:
 
     def endProgram(self, bool):
         self.closed = [True, bool]
+
+    def showFrame(self, l):
+        frame = cv2.resize(self.databaseInfo[l][4], (800, 600), interpolation = cv2.INTER_AREA)
+        cv2.imshow("Frame", frame)
+
+    def sort(self, sortState):
+        print(sortState)
+        for m in range(len(self.databaseInfo)):
+            for n in range(len(self.databaseInfo[0])-2):
+                self.databaseInfo[m][n] = int(self.databaseInfo[m][n])
+        self.databaseInfo = mg.sort(self.databaseInfo, sortState)

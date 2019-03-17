@@ -73,6 +73,7 @@ while True:
         dc.setDirection(4)
         break
     elif  recievedSpeed is not None :
+        recievedSpeed = int(recievedSpeed)
         if (recievedSpeed != speed) and (int(recievedSpeed) < 101) and (recievedSpeed != (speed/10)):
             speed = recievedSpeed
 

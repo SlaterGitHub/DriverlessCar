@@ -38,5 +38,4 @@ def getData(cur):
         x = list(x)
         x[4] = reform(x[4], 3, 320, 240)
         entries.append(x)
-    print("done")
     return entries

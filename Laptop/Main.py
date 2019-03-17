@@ -7,16 +7,16 @@ import sys
 import UIpanel
 import DriverDB as db
 
+x = [1]
+y = [0]
 command = None
 connected = False
 speed = "50"
 key = None
 frame = cv2.imread("C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\Laptop\\blackPhoto.png", 3)
-x = None
-y = None
 StartUI = [[10, 10, 10], [3, 3, 3],["Database", "Start", "Exit"],["Button", "Button", "Button"],[[1000, 540], [1100, 540], [1200, 540]]]
 DriveUI = [[800, 10, 10, 10, 40, 40, 40, 4.5],[600, 3, 3, 3, 1, 1, 1, 4],[frame, "Database", "Fail", "Success", "Time", "Distance", "Speed", [x, y, "speed", "time"]],["Frame", "Button", "Button", "Button", "Text", "Text", "Text", "Plot"],[[0,0], [1000, 540], [1100, 540], [1200, 540], [804, 10], [804, 50], [804, 90], [810, 130]]]
-DatabaseUI = [[140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15, 15, 15], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4], ["", "", "", "", "", "", "", "", "", "", "Start", "Start", "Start", "Start", "Start", "Start", "Start", "Start", "Start", "Start", "All Drives", "Fails", "Successes"], ["Text", "Text", "Text", "Text", "Text", "Text", "Text", "Text", "Text", "Text", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button"], [[0, 100], [0, 150], [0, 200], [0, 250], [0, 300], [0, 350], [0, 400], [0, 450], [0, 500], [0, 550], [1175, 97], [1175, 147], [1175, 197], [1175, 247], [1175, 297], [1175, 347], [1175, 397], [1175, 447], [1175, 497], [1175, 547], [20, 15], [220, 15], [420, 15]]]
+DatabaseUI = [[140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15, 15, 15, 15, 10, 10, 10, 10], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4], ["", "", "", "", "", "", "", "", "", "", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "Last Frame", "All Drives", "Fails", "Successes", "Exit", "Sort PK", "Sort Time", "Sort Distance", "Sort Speed"], ["Text", "Text", "Text", "Text", "Text", "Text", "Text", "Text", "Text", "Text", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button", "Button"], [[0, 100], [0, 150], [0, 200], [0, 250], [0, 300], [0, 350], [0, 400], [0, 450], [0, 500], [0, 550], [1175, 97], [1175, 147], [1175, 197], [1175, 247], [1175, 297], [1175, 347], [1175, 397], [1175, 447], [1175, 497], [1175, 547], [20, 15], [220, 15], [420, 15], [620, 15], [820, 15], [920, 15], [1020, 15], [1120, 15]]]
 
 HomeUI = UIpanel.UIpanel(StartUI[0], StartUI[1], StartUI[2], StartUI[3], StartUI[4])
 
@@ -39,11 +39,16 @@ def drive():
     while True:
         frame = cn.recvVarFrame(pipeline3, False)
         speed, distance = cn.recvStats(pipeline2)
-        if (frame is not None):
+        if (frame is not None) and (speed != None) and (distance != None):
             DriveUI[2][0] = cv2.resize(frame, (800, 600), interpolation = cv2.INTER_AREA)
             DriveUI[2][4] = "Time:" + ("%.2f" % (time.time() - progtime))
             DriveUI[2][5] = "Distance: " + str(distance)
             DriveUI[2][6] = "Speed: " + str(speed)
+            if max(x) != int(time.time() - progtime):
+                x.append(int(time.time() - progtime))
+                y.append(int(speed))
+            DriveUI[2][7][0] = x
+            DriveUI[2][7][1] = y
             HomeUI.setValue(DriveUI[2])
 
         key = cv2.waitKey(1) & 0xFF
