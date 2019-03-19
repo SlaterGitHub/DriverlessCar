@@ -100,6 +100,7 @@ class UIpanel:
         self.panel.graphPane.draw()
 
     def displayValues(self):
+        time.sleep(self.delay)
         if self.updating != 'drive' or 'database':
             for l in range(len(self.content)):
                 if self.panelType[l] == "Frame":
@@ -132,11 +133,13 @@ class UIpanel:
         self.updating = None
         self.closed = [False, False]
         self.databaseInfo = None
+        self.delay = 0
         self.buildPanel()
 
     def DB(self):
         self.closed = [True, True]
         self.updating = 'database'
+        self.delay = 0.2
 
     def getAllDrives(self):
         self.databaseInfo = db.getAll()
@@ -149,6 +152,7 @@ class UIpanel:
 
     def Start(self):
         self.updating = 'drive'
+        self.delay = 0.2
 
     def Exit(self):
         self.panel.destroy()
@@ -169,6 +173,7 @@ class UIpanel:
         self.loc = loc
         self.buildPanel()
         self.updating = None
+        self.delay = 0
 
     def isUpdating(self):
         return self.updating

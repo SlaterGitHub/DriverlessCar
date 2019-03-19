@@ -1,10 +1,9 @@
 import random as rdm
 import time
-#import libraris
+"""import libraries"""
 
 def getDigits(data, lower, upper, indx, l):
     Digits = [i[l] for i in data][lower:upper]
-    print(Digits)
     for l in range(indx):
         if (len(Digits) - 1) < l:
             break
@@ -28,8 +27,6 @@ def mergeSort(data, indx, l):
     for loop in range(loop):
         #runs loop times for every loop
         data = getDigits(data, (indx*loop), ((indx*loop)+(indx)), indx, l)
-        """for j in range(len(tempArray)):
-            finalArray.append(tempArray[j])"""
     if excess != 0:
         mergeSort(data, excess, l)
     #run the excess values through mergeSort as their own array
@@ -37,7 +34,6 @@ def mergeSort(data, indx, l):
     return data
 
 def listSorted(array):
-    print(array)
     for m in range(len(array)-1):
         if array[m+1] < array[m]:
             return False
