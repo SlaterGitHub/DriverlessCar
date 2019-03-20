@@ -135,6 +135,7 @@ class UIpanel:
     def showPanel(self):
         self.displayValues()
         self.panel.mainloop()
+        """start the display values loop and show the window"""
 
     def __init__(self, xSize, ySize, content, panelType, loc):
         self.x = xSize
@@ -150,28 +151,39 @@ class UIpanel:
         self.databaseInfo = None
         self.delay = 0
         self.buildPanel()
+        """Set the windows attributes and build the panel"""
 
     def DB(self):
         self.closed = [True, True]
         self.updating = 'database'
         self.delay = 0.2
+        """Set closed to True True for True being closing 
+        and True being for the drive has failed. Set panel status 
+        to updating to database. While updating make the update method delay itself"""
 
     def getAllDrives(self):
         self.databaseInfo = db.getAll()
+        """Get all rows from database"""
 
     def getFails(self):
         self.databaseInfo = db.getFoS(1)
+        """Get only failed rows from database"""
 
     def getSuccesses(self):
         self.databaseInfo = db.getFoS(0)
+        """Get only succeede rows from database"""
 
     def Start(self):
         self.updating = 'drive'
         self.delay = 0.2
+        """set updating status to drive and make the update
+        method delay itself"""
 
     def Exit(self):
         self.panel.destroy()
         self.updating = 'end'
+        """close the entire panel and self the updating status to 
+        end"""
 
     def update(self, xSize, ySize, content, panelType, loc):
         for l in self.panel.winfo_children():
@@ -189,20 +201,28 @@ class UIpanel:
         self.buildPanel()
         self.updating = None
         self.delay = 0
+        """Close all widgets and change the panels attributes befroe rebuilding the
+        panel. Once panel is build change update status to None and have no delay in the 
+        update method"""
 
     def isUpdating(self):
         return self.updating
+        """Give updating variable to what calls it"""
 
     def endProgram(self, bool):
         self.closed = [True, bool]
+        """Set closed to be True and either True or False"""
 
     def showFrame(self, l):
         frame = cv2.resize(self.databaseInfo[l][4], (800, 600), interpolation = cv2.INTER_AREA)
         cv2.imshow("Frame", frame)
+        """Show the frame of row l in a seperate opencv window under the name 'frame'"""
 
     def sort(self, sortState):
-        print(sortState)
         for m in range(len(self.databaseInfo)):
             for n in range(len(self.databaseInfo[0])-2):
                 self.databaseInfo[m][n] = int(self.databaseInfo[m][n])
         self.databaseInfo = mg.sort(self.databaseInfo, sortState)
+        """Change every item in the 0th to 3rd index to be an integer then
+        pass the entire list through the merge sort with the sort state which is the
+        cloumn of the data it should be sorted by"""
