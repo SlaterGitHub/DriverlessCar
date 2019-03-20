@@ -12,6 +12,7 @@ import sys
 import time
 import DriverDB as db
 import MergeSort as mg
+"""import libraries"""
 
 class UIpanel:
     def buildPanel(self):
@@ -79,12 +80,18 @@ class UIpanel:
                 self.content[l][1] = np.array(Values[l][1])
             else:
                 self.content[l] = Values[l]
+        """If the value passed into the function is a value for a 
+        plot then convert both items into numpy arrays"""
+        
 
     def updateText(self, l):
         self.panelContent[l].config(state=NORMAL)
         self.panelContent[l].delete(1.0,END)
         self.panelContent[l].insert(END, self.content[l])
         self.panelContent[l].config(state=DISABLED)
+        """Enable editing on the text field then change the 
+        text to be clear then add the new value and finally 
+        disable editing"""
 
     def updateFrame(self, l):
         img = cv2.cvtColor(self.content[l], cv2.COLOR_BGR2RGBA)
@@ -92,12 +99,18 @@ class UIpanel:
         img = ImageTk.PhotoImage(image=img)
         self.panelContent[l].imgtk = img
         self.panelContent[l].configure(image=img)
+        """Convert the image in content to RGBA colour space
+        then build the image from an array. Change the image 
+        in imgtk to the new image"""
 
     def updatePlot(self, l):
         if self.content[l][0][len(self.content[l][0])-1] > 100:
             self.ax.set_xlim(0, int(self.content[l][0][len(self.content[l][0])-1])+2)
-        self.panel.axis.set_data(np.array(self.content[l][0]), np.array(self.content[l][1]))
+        self.panel.axis.set_data(self.content[l][0], self.content[l][1])
         self.panel.graphPane.draw()
+        """If the maximum x plot is higher than the x axis limit then incrase the
+        x axis limit to 2 more than the max x point.
+        Set the graph to show the new numpy array and redraw the plot"""
 
     def displayValues(self):
         time.sleep(self.delay)
@@ -115,6 +128,8 @@ class UIpanel:
                     print("UI error, panelType not compatible")
                     return
         self.panel.after(20, self.displayValues)
+        """Delay the update if the widgets are being changed then 
+        run the update method depeinding on what the panelType is"""
 
 
     def showPanel(self):
