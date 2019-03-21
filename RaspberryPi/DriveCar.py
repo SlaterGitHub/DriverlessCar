@@ -6,38 +6,43 @@ from threading import Thread
 gpio.setup(7, gpio.OUT)
 gpio.setup(11, gpio.OUT)
 gpio.setup(13, gpio.OUT)
-gpio.setup(15, gpio.OUT)
-#create gpio and set pins to be output mode"""
+gpio.setup(15, gpio.OUT)"""
+"""create gpio and set pins to be output mode"""
 
 path = 3
 freq = 50
 velocity = 50
 currVelocity = velocity
 acc = None
-#set starting speed and direction to stop
+"""set starting speed, direction and acceleration to stop. set the freqancy
+of the motors to 50Hz"""
 
 """
 wheel = [gpio.PWM(7, freq), gpio.PWM(11, freq), gpio.PWM(13, freq), gpio.PWM(15, freq)]
 for x in range(4):
     wheel[x].start(0)"""
+"""Set each wheel to activate at the freqancy of 50Hz"""
 
 def forward(velocity):
     wheel[0].ChangeDutyCycle(currVelocity)
     wheel[1].ChangeDutyCycle(0)
     wheel[2].ChangeDutyCycle(0)
     wheel[3].ChangeDutyCycle(currVelocity)
+    """Move forward at speed currvelocity"""
 
 def left(velocity):
     wheel[0].ChangeDutyCycle(currVelocity)
     wheel[1].ChangeDutyCycle(0)
     wheel[2].ChangeDutyCycle(currVelocity)
     wheel[3].ChangeDutyCycle(0)
+    """Move left at speed currvelocity"""
 
 def right(velocity):
     wheel[0].ChangeDutyCycle(0)
     wheel[1].ChangeDutyCycle(currVelocity)
     wheel[2].ChangeDutyCycle(0)
     wheel[3].ChangeDutyCycle(currVelocity)
+    """Move rigth at speed currvelocity"""
 
 def stop():
     for x in range(4):
@@ -50,35 +55,30 @@ def accelerate(finalSpeed):
     global velocity, currVelocity
     changeInSpeed = int(finalSpeed - currVelocity)
     timeInterval = abs(5.0/float(changeInSpeed))
-    print("time" + str(timeInterval))
-    print("change" + str(changeInSpeed))
     interval = changeInSpeed / abs(changeInSpeed)
     for x in range(abs(changeInSpeed)):
         currVelocity += interval
-        print("------------------------------------")
-        print("curr vel" + str(currVelocity))
-        print("------------------------------------")
         time.sleep(timeInterval)
+    """find the change in speed needed to achieve the target speed, find how much
+    time should be waited between each percentage change in the motors freqancy.
+    change the current velocity until the car is at target speed"""
     return
 
 def setMovement():
     while True:
-        time.sleep(1)
         global path
         global currVelocity
         if path == 0:
-            print("forward")
+            pass
             #forward(currVelocity)
         elif path == 1:
-            print("left")
+            pass
             #left(currVelocity)
         elif path == 2:
-            print("right")
+            pass
             #right(currVelocity)
         elif path == 3:
-            print("stop")
-            #stop()
-        elif path == 4:
+            pass
             #stop()
             break
     return
@@ -87,6 +87,7 @@ def setMovement():
 def setDirection(direction):
     global path
     path = direction
+    """change the direction"""
 
 def setSpeed(speed):
     global velocity
@@ -97,7 +98,8 @@ def setSpeed(speed):
             if acc is not None:
                 acc.join()
             velocity = speed
-            print(velocity)
             acc = Thread(target = accelerate, args = [velocity])
             acc.start()
-            """if the speed is not the same as the current speed a thread is made to accelerate the car to the target speed"""
+    """If the target speed is not empty and not the current speed then wait until
+    the car stops accelerating and create a thread to change the cars speed to the
+    wanted speed"""

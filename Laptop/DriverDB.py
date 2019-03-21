@@ -2,10 +2,11 @@ import MySQLdb
 from Connection2 import deform, reform
 """import libraries"""
 
-host = "dbrysl.ccwooq5jrcka.eu-west-2.rds.amazonaws.com"
-user = "rysl"
-password = "HomeOfBaseData19"
-dbName = "rysl_general_db"
+host = "cardb.ccwooq5jrcka.eu-west-2.rds.amazonaws.com"
+user = "carrysl"
+password = "Monkey12"
+dbName = "carinfo"
+
 """Database details"""
 
 db = MySQLdb.connect(host = host,

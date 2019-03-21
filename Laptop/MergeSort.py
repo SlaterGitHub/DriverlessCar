@@ -30,11 +30,11 @@ def mergeSort(data, indx, l):
     if excess != 0:
         mergeSort(data, excess, l)
     #run the excess values through mergeSort as their own array
-    """Find how many times the array can be looped until it reaches end, 
+    """Find how many times the array can be looped until it reaches end,
     find an excess of list items that will not fit in the loop,
-    loop the data that does fit then run the data that doesnt in its own 
+    loop the data that does fit then run the data that doesnt in its own
     loop"""
-    
+
     return data
 
 def listSorted(array):
@@ -42,7 +42,8 @@ def listSorted(array):
         if array[m+1] < array[m]:
             return False
     return True
-    """Check the array to make sure each value is in order from smallest to biggest"""
+    """Check the array to make sure each value is in order from smallest to
+    biggest"""
 
 def sort(data, l):
     y = 2
@@ -52,4 +53,3 @@ def sort(data, l):
     return data
     """keep running the program until data is sorted, increase y by iself
     for every loop, y is the amount of items taken in per loop"""
-    
