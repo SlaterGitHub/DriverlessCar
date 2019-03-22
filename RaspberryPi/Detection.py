@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import imutils
 
-StopPth = 'C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\stopsign_classifier.xml'
-SpeedPth = "C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\RaspberryPi\\Speedlimit_HAAR_ 13Stages.xml"
+StopPth = 'stopsign_classifier.xml'
+SpeedPth = "Speedlimit_HAAR_ 13Stages.xml"
 StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
 """Set the path to the cascade filters"""
