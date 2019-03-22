@@ -34,7 +34,7 @@ def getPath(frame, grey):
         contours = cv2.findContours(mask2.copy(),
                                     cv2.RETR_EXTERNAL,
                                     cv2.CHAIN_APPROX_SIMPLE)
-        contours = contours[1] if imutils.is_cv2() else contours[0]
+        contours = contours[0] if imutils.is_cv2() else contours[1]
         """make an array of each block of colour, this is pixels that are touching"""
 
         centers = []

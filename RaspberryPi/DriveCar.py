@@ -2,11 +2,11 @@
 import time
 from threading import Thread
 
-"""gpio.setmode(gpio.BOARD)
+gpio.setmode(gpio.BOARD)
 gpio.setup(7, gpio.OUT)
 gpio.setup(11, gpio.OUT)
 gpio.setup(13, gpio.OUT)
-gpio.setup(15, gpio.OUT)"""
+gpio.setup(15, gpio.OUT)
 """create gpio and set pins to be output mode"""
 
 path = 3
@@ -17,10 +17,9 @@ acc = None
 """set starting speed, direction and acceleration to stop. set the freqancy
 of the motors to 50Hz"""
 
-"""
 wheel = [gpio.PWM(7, freq), gpio.PWM(11, freq), gpio.PWM(13, freq), gpio.PWM(15, freq)]
 for x in range(4):
-    wheel[x].start(0)"""
+    wheel[x].start(0)
 """Set each wheel to activate at the freqancy of 50Hz"""
 
 def forward(velocity):
@@ -54,7 +53,7 @@ different speeds"""
 def accelerate(finalSpeed):
     global velocity, currVelocity
     changeInSpeed = int(finalSpeed - currVelocity)
-    timeInterval = abs(5.0/float(changeInSpeed))
+    timeInterval = abs(1.0/float(changeInSpeed))
     interval = changeInSpeed / abs(changeInSpeed)
     for x in range(abs(changeInSpeed)):
         currVelocity += interval
@@ -69,17 +68,13 @@ def setMovement():
         global path
         global currVelocity
         if path == 0:
-            pass
-            #forward(currVelocity)
+            forward(currVelocity)
         elif path == 1:
-            pass
-            #left(currVelocity)
+            left(currVelocity)
         elif path == 2:
-            pass
-            #right(currVelocity)
+            right(currVelocity)
         elif path == 3:
-            pass
-            #stop()
+            stop()
             break
     return
     """Depending on the value of path, 1 of 3 functions are run and passed the speed"""

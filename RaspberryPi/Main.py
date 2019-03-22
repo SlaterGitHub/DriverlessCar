@@ -4,7 +4,7 @@ import Camera as cam
 import time
 import sys
 import cv2
-#import DistanceSensor as dist
+import DistanceSensor as dist
 import DriveCar as dc
 import Detection as detect
 import Direction as dr
@@ -20,10 +20,10 @@ c = cn.getConnection()
 startProgram = time.time()
 """get time at start of program"""
 
-#recvSpeed = Thread(target = cn.recvData)
-#recvSpeed.start()
-#distThread = Thread(target = dist.findDistance)
-#distThread.start()
+recvSpeed = Thread(target = cn.recvData)
+recvSpeed.start()
+distThread = Thread(target = dist.findDistance)
+distThread.start()
 """Start thread to constantly recvieve speed sign text and thread to get distance from distance sensor"""
 
 Drive = Thread(target = dc.setMovement)
@@ -91,11 +91,11 @@ while True:
     is less than 101 (as the speed limit will be no higher than 100mph) and the speed is not the old speed
     divided by 10, this is to catch any times the server only finds the first digit in the speed sign"""
 
-    #distance = dist.getDistance()
+    distance = dist.getDistance()
     """get the distance from the distance class"""
 
-    """if distance < 10:while True:
-        speed = 0"""
+    if distance < 10:while True:
+        speed = 0
     """if the car is 10cm away from an object, stop the car"""
 
     for (x, y, w, h) in  stopSigns:
