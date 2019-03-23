@@ -87,10 +87,6 @@ def drive():
     time.sleep(0.1)
 
     finalFrame, finalDistance, finalSpeed, progDuration, fail = cn.recvFinals()
-    print(finalDistance)
-    print(finalSpeed)
-    print(progDuration)
-    print(fail)
 
     db.upload(int(progDuration), int(finalDistance), int(finalSpeed), int(fail), finalFrame)
     """Wait 100ms for the raspberry pi to send the final data and recieve it all
