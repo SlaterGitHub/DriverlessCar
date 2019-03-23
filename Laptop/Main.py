@@ -17,7 +17,7 @@ key = None
 "define variables"
 
 frame = cv2.imread("C:\\Users\\Ryan\\Documents\\GitHub\\DriverlessCar\\Laptop\\blackPhoto.png", 3)
-"""Set frame to be a black image to start off with, this allows the GUI to haveh
+"""Set frame to be a black image to start off with, this allows the GUI to have
 somthing to build around until a full frame is sent by the raspberry pi"""
 
 StartUI = [[10, 10, 10], [3, 3, 3],["Database", "Start", "Exit"],["Button", "Button", "Button"],[[1000, 540], [1100, 540], [1200, 540]]]
