@@ -20,8 +20,6 @@ c = cn.getConnection()
 startProgram = time.time()
 """get time at start of program"""
 
-recvSpeed = Thread(target = cn.recvData)
-recvSpeed.start()
 distThread = Thread(target = dist.findDistance)
 distThread.start()
 """Start thread to constantly recvieve speed sign text and thread to get distance from distance sensor"""
@@ -75,11 +73,11 @@ while True:
 
     if recievedSpeed == 'FL':
         finish(frame, int(distance), speed, (time.time()-startProgram), "1")
-        dc.setDirection(3)
+        dc.setDirection(4)
         break
     elif recievedSpeed == 'SS':
         finish(frame, int(distance), speed, (time.time()-startProgram), "0")
-        dc.setDirection(3)
+        dc.setDirection(4)
         break
         """if the server says the speed is FL (fail) or SS (success) then send the final data
         to finish and set the direction to 4 (stop immediatly)"""
@@ -94,7 +92,7 @@ while True:
     distance = dist.getDistance()
     """get the distance from the distance class"""
 
-    if distance < 10:while True:
+    if distance < 10:
         speed = 0
     """if the car is 10cm away from an object, stop the car"""
 

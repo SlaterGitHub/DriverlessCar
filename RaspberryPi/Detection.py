@@ -8,7 +8,7 @@ StopCas = cv2.CascadeClassifier(StopPth)
 SpeedCas = cv2.CascadeClassifier(SpeedPth)
 """Set the path to the cascade filters"""
 
-boundries = [([50, 30, 20], [100, 250, 150])]
+boundries = [([0, 0, 180], [220, 220, 255])]
 """Set the boundaries of the colour that the road can be"""
 
 averageX = None

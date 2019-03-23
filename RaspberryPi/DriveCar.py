@@ -1,4 +1,4 @@
-#import RPi.GPIO as gpio
+import RPi.GPIO as gpio
 import time
 from threading import Thread
 
@@ -11,7 +11,7 @@ gpio.setup(15, gpio.OUT)
 
 path = 3
 freq = 50
-velocity = 50
+velocity = 100
 currVelocity = velocity
 acc = None
 """set starting speed, direction and acceleration to stop. set the freqancy
@@ -74,6 +74,8 @@ def setMovement():
         elif path == 2:
             right(currVelocity)
         elif path == 3:
+            stop()
+        elif path == 4:
             stop()
             break
     return

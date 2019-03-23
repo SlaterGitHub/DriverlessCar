@@ -4,11 +4,11 @@ def getDirection(averageX):
         return 3
     centered = averageX - 160
 
-    if abs(centered) <= 60:
+    if abs(centered) <= 30:
         return 0
-    elif centered < -60:
+    elif centered < -30:
         return 1
-    elif centered > 60:
+    elif centered > 30:
         return 2
 """Check if averageX is None, if it is then that means there is no road so 3 (stop)
 if returned, if not then check if the point is between -60 and 60 if so then

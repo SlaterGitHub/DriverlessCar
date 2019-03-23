@@ -5,7 +5,7 @@ import time
 """import libraries"""
 
 socketNum = 5001
-ip = "localhost"
+ip = "192.168.0.28"
 pipeline1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pipeline3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -116,8 +116,9 @@ def endConnection():
     """close all pipelines"""
 
 def sendStats(speed, distance):
-    speed = constVarLength(3, speed)
-    distance = constVarLength(3, distance)
-    speedText.sendall(speed + distance)
+    speed = constVarLength(3, int(speed))
+    distance = constVarLength(3, int(distance))
+    if (speed != '') and (distance != ''):
+        speedText.sendall(speed + distance)
     """set the speed and distance to be a contant length and send them through
     speedText"""
